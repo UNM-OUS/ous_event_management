@@ -1,0 +1,33 @@
+.Form .Container.class-MailingAddressField {
+    display: flex;
+    flex-wrap: wrap;
+
+    &>label {
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    &>.FieldWrapper {
+        margin-bottom: 0;
+    }
+
+    &>.FieldWrapper-address {
+        width: 80%;
+    }
+
+    &>.FieldWrapper-apartment {
+        width: 20%;
+    }
+
+    &>.FieldWrapper-city {
+        width: 50%;
+    }
+
+    &>.FieldWrapper-state {
+        width: 25%;
+    }
+
+    &>.FieldWrapper-zip {
+        width: 25%;
+    }
+}

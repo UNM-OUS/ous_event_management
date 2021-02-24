@@ -1,0 +1,204 @@
+types:
+  content:
+    event-group: ${module.namespace}\EventGroup
+    event: ${module.namespace}\Event
+    event-signup: ${module.namespace}\Signup
+    event-signupwindow:  ${module.namespace}\SignupWindow
+    event-userlist: ${module.namespace}\UserList
+    event-bouncer: Digraph\DSO\Noun
+    event-billing-index: ${module.namespace}\BillingIndex
+
+image-transform:
+  driver: 
+    class: ByJoby\ImageTransform\Drivers\GDDriver
+    arg1: null
+
+strings:
+  urls:
+    proper:
+      event-group/secondary-events: Departmental events
+      event-signupwindow/signup: Begin signup
+      event-signupwindow/userlists: user lists
+      event-signup/event-selection: Event selection
+      event-signup/personalpage: Personalized page
+    common:
+      _event-management/display: Event management
+      _event-management/page-moderation: Personalized page moderation queue
+      _event-management/mail-templates: Email templates
+      _event-management/mail-templates-edit: Add/edit email template
+      _event-management/reportbuilder: Report designer
+      _event-management/reports: Signup reports
+      _event-management/report: Signup report
+      _event-management/photos: Personalized page photos
+
+factory_columns:
+  content:
+    signup__for:
+      type: VARCHAR(150)
+      index: BTREE
+    signup__owner:
+      type: VARCHAR(150)
+      index: BTREE
+    complete_state:
+      type: VARCHAR(10)
+      index: BTREE
+    moderation__state:
+      type: VARCHAR(10)
+      index: BTREE
+
+events:
+  email:
+    from: graduation@unm.edu
+    debug_bcc:
+      - elhober@unm.edu
+    named_templates:
+      signup_incomplete: 'signup_incomplete: Sent automatically when a signup is created or becomes incomplete'
+      signup_complete: 'signup_complete: Sent automatically when a signup becomes complete'
+      signup_standalone_incomplete: 'signup_standalone_incomplete: Sent automatically when a standalone signup is created or becomes incomplete'
+      signup_standalone_complete: 'signup_standalone_complete: Sent automatically when a standalone signup becomes complete'
+      signup_page_approved: 'signup_page_approved: Sent automatically when a signup is approved in moderation'
+      signup_page_denied: 'signup_page_denied: Sent automatically when a signup is denied in moderation'
+  forms:
+    presets:
+      gradstream-students:
+        contact: ${module.namespace}\Chunks\Contact\ContactInformation
+        degree: ${module.namespace}\Chunks\Degrees\AllDegrees
+        personalizedpage: ${module.namespace}\Chunks\Pages\GraduatePage
+        waiver: ${module.namespace}\Chunks\Old\WaiverOnline
+      student-pages-2021:
+        contact: ${module.namespace}\Chunks\Contact\ContactInformation
+        degree: ${module.namespace}\Chunks\Degrees\AllDegrees
+        personalizedpage: ${module.namespace}\Chunks\Pages\GraduatePage
+        waiver: ${module.namespace}\Chunks\jSignature\WaiverOnline
+      tassel-giveaway:
+        contact: ${module.namespace}\Chunks\Contact\MailingContactInformation
+      commencement-faculty:
+        contact: ${module.namespace}\Chunks\Contact\FacultyContactInformation
+        waiver: ${module.namespace}\Chunks\jSignature\Waiver
+      regalia:
+        contact: ${module.namespace}\Chunks\Contact\FacultyContactInformation
+        regalia: ${module.namespace}\Chunks\Regalia\RegaliaOrderChunk
+
+permissions:
+  events:
+    '*': [deny all]
+    form/newpreset: [deny all, allow group admin]
+    form/newgrouping: [deny all, allow group admin]
+    form/newsignupwindowtype: [deny all, allow group admin]
+  url:
+    # control panel
+    _event-management/*: [deny all, allow group editor]
+    _event-management/display: [allow group ucam]
+    _event-management/reportbuilder: [deny all, allow group admin]
+    _event-management/photos: [allow group ucam]
+    # basic noun permissions
+    event-group/*: [deny all, allow group admin]
+    event-signupwindow/*: [deny all, allow group admin]
+    event-signup/*: [deny all, allow group admin]
+    event/*: [deny all, allow group admin]
+    # event-group
+    event-group/display: [allow all]
+    event-group/secondary-events: [allow all]
+    event-group/add: [allow group editor]
+    event-group/edit: [allow group editor]
+    # event
+    event/display: [allow all]
+    event/report: [allow group editor]
+    event/reports: [allow group editor]
+    # event-signupwindow
+    event-signupwindow/display: [allow group user]
+    event-signupwindow/signup: [allow group user]
+    event-signupwindow/userlists: [allow group editor]
+    event-signupwindow/invited-emails: [allow group editor]
+    event-signupwindow/reports: [allow group editor]
+    # event-signup
+    event-signup/display: [allow all]
+    event-signup/status: [allow all]
+    event-signup/chunk: [allow all]
+    event-signup/event-selection: [allow all]
+    event-signup/personalpage: [allow all]
+    event-signup/personalpage-preview: [allow group editor]
+    # event-userlist
+    event-userlist/*: [deny all]
+    event-userlist/edit: [allow group admin]
+    # event-billing-index
+    event-billing-index/display: [deny all, allow group editor]
+    # global event type permissions
+    '*/event-admin': [allow group editor]
+  add:
+    # disallow adding event types
+    '*/event': [deny all]
+    '*/event-signup': [deny all]
+    '*/event-signupwindow': [deny all]
+    '*/event-userlist': [deny all]
+    '*/event-billing-index': [deny all]
+    # only admin can add event groups
+    'page/event-group': [deny all, allow group admin]
+    # disallow adding anything under leaf types
+    'event-signupwindow/*': [deny all]
+    'event-signup/*': [deny all]
+    'event-userlist/*': [deny all]
+    # allow adding events and signupwindows under groups
+    'event-group/event': [allow group editor]
+    'event-group/event-signupwindow': [allow group editor]
+    # only admin can add userlists
+    'event-signupwindow/event-userlist': [allow group admin]
+    # allow billing indexes under various event nouns
+    'event-group/event-billing-index': [allow group editor]
+    'event/event-billing-index': [allow group editor]
+    'event-signup/event-billing-index': [allow group editor]
+    'event-signupwindow/event-billing-index': [allow group editor]
+
+actions:
+  proper:
+    event-group:
+      reports: '!id/reports'
+    event-signupwindow:
+      userlists: '!id/userlists'
+      reports: '!id/reports'
+    event:
+      reports: '!id/reports'
+  common:
+    _user/signedin:
+      eventmanagement: '_event-management/display'
+
+image:
+  presets:
+    signup-portrait:
+      size: 600 600 inset
+      extension: jpg
+      save:
+        jpeg_quality: 90
+    signup-thumbnail:
+      size: 300 300 inset
+      extension: jpg
+      save:
+        jpeg_quality: 90
+    program-portrait:
+      size: 600 600 inset
+      format: jpeg
+
+navigation:
+  parents:
+    common:
+      '_event-management/mail-templates-edit': '_event-management/mail-templates'
+      '_event-management/report': '_event-management/reports'
+    proper:
+      'event-userlist/display': '!parent/userlists'
+      'event-signup/personalpage': '!parent/display'
+
+defaultnounbytype:
+  event-group:
+    digraph:
+      slugpattern: "[parent]/[name]"
+  event:
+    digraph:
+      slugpattern: "[parent]/[id]"
+  event-signupwindow:
+    digraph:
+      slugpattern: "[parent]/[id]"
+
+helpers:
+  classes:
+    events: ${module.namespace}\EventHelper
+    jostens: ${module.namespace}\Jostens\JostensHelper

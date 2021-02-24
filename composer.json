@@ -1,0 +1,13 @@
+{
+    "name": "unmous/ous_event_management",
+    "type": "digraph-module",
+    "autoload": {
+        "psr-4": {
+            "Digraph\\Modules\\ous_event_management\\": "src/"
+        }
+    },
+    "require": {
+        "box/spout": "^3.1",
+        "byjoby/image-transform": "^0.1.1"
+    }
+}

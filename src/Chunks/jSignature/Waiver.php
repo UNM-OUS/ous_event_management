@@ -1,0 +1,82 @@
+<?php
+namespace Digraph\Modules\ous_event_management\Chunks\jSignature;
+
+use Digraph\Modules\ous_event_management\Chunks\AbstractChunk;
+
+class Waiver extends AbstractChunk
+{
+    protected $label = 'Waiver agreement';
+    const WEIGHT = 1000;
+
+    public function instructions(): ?string
+    {
+        return
+            '<div class="digraph-card incidental">' .
+            '<p>Please be advised that filming/taping and photographic recording will take place at events in connection with production of The University of New Mexico institutional promotional material. </p>' .
+            '<p>Information provided in this form may be used during the event or in promotion for the event or University. People in public areas near the event may appear in pictures and/or videos. Please be aware that by signing up for the event or entering the area, you grant The University of New Mexico and its designees the irrevocable right to use your voice, image, name and likeness, without compensation, in all manners in connection with the picture, including composite or modified representations, for advertising, trade or any other lawful purposes, and you release The University of New Mexico and its designees from all liability in connection therein.</p>' .
+            '</div>'
+        ;
+    }
+
+    public function body_edit()
+    {
+        $this->jSignature();
+        parent::body_edit();
+    }
+
+    public function body_complete()
+    {
+        if ($this->signup[$this->name . '.signature'] != 'image/jsignature;base30,' && substr($this->signup[$this->name . '.signature'], 0, 24) == 'image/jsignature;base30,') {
+            $svg = new jSignature_Tools_SVG();
+            $b30 = new jSignature_Tools_Base30();
+            $signature = $this->signup[$this->name . '.signature'];
+            $signature = substr($signature, 24);
+            $signature = $b30->Base64ToNative($signature);
+            echo '<div class="jsignature-svg-signature">';
+            echo $svg->NativeToSVG($signature);
+            echo '</div>';
+        } else {
+            echo '<div class="jsignature-text-signature">' . htmlspecialchars($this->signup[$this->name . '.signature']) . '</div>';
+        }
+        echo "<div class='incidental'>";
+        echo "first signed ".$this->signup[$this->name . '.chunk.created.time'];
+        echo " by " . preg_replace('/@netid$/', '', $this->signup[$this->name . '.chunk.created.user']);
+        echo "</div>";
+    }
+
+    public function body_incomplete()
+    {
+        echo "You must review and agree to the waiver";
+    }
+
+    protected function jSignature()
+    {
+        $baseURL = $this->signup->cms()->helper("urls")->parse('/');
+        echo "<!--[if lt IE 9]><script type='text/javascript' src='$baseURL/jsignature/flashcanvas.js'></script><![endif]-->";
+        echo "<script src='$baseURL/jsignature/jSignature.min.js'></script>";
+        echo "<script src='$baseURL/jsignature/integration.js'></script>";
+    }
+
+    protected function form_map(): array
+    {
+        return [
+            'checkbox' => [
+                'label' => 'I have read and agree to the above',
+                'field' => $this->name . '.checkbox',
+                'class' => 'checkbox',
+                'weight' => 500,
+                'required' => true,
+            ],
+            'signature' => [
+                'label' => 'Signature',
+                'field' => $this->name . '.signature',
+                'class' => 'text',
+                'weight' => 510,
+                'required' => true,
+                'call' => [
+                    'addClass' => ['jSignature'],
+                ],
+            ],
+        ];
+    }
+}

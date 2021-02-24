@@ -1,0 +1,124 @@
+.signup-chunk-iframe {
+    max-width: 40rem;
+    font-size: 1rem;
+    margin: $(spacing_base) auto !important;
+}
+
+.signup-chunk {
+    box-sizing: border-box;
+    max-width: 40rem;
+    font-size: 1rem;
+    margin: $(spacing_base) auto;
+    background: $(color_shade);
+    border-radius: $(border_radius_accent);
+    position: relative;
+    padding: $(spacing_tight);
+    overflow: hidden;
+    line-height: 1.4em;
+    border: 1px solid #ccc;
+    border-top: 0;
+
+    &:first-child {
+        margin-top: 0;
+    }
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    .signup-chunk-label {
+        background: $(color_shade);
+        margin: -$(spacing_tight);
+        margin-bottom: $(spacing_tight);
+        padding: $(spacing_tight);
+    }
+
+    .mode-switch {
+        line-height: 1.4rem;
+        background: #fff;
+        position: absolute;
+        top: $(spacing_tight);
+        right: $(spacing_tight);
+        font-size: 0.75rem;
+        padding: 0 $(spacing_tight);
+    }
+
+    &.complete {
+        border-color: $(color_confirmation);
+
+        .signup-chunk-label {
+            color: #fff;
+            background: $(color_confirmation);
+        }
+    }
+
+    &.incomplete {
+        border-color: $(color_warning);
+
+        .signup-chunk-label {
+            color: #fff;
+            background: $(color_warning);
+        }
+    }
+
+    &.editing {
+        border-color: $(color_notice);
+
+        .signup-chunk-label {
+            color: #fff;
+            background: $(color_notice);
+        }
+    }
+}
+
+.personalized-page-body {
+    .personalized-photo {
+        display: block;
+        color: white;
+        border: 0.125em solid $(color_accent);
+        background: $(color_accent);
+        border-radius: $(border_radius_accent);
+        box-sizing: border-box;
+    }
+
+    blockquote {
+        background: transparent;
+        color: white;
+        background: $(color_accent);
+
+        &:before {
+            display: block;
+            font-size: 2em;
+            float: left;
+            padding: 0.25em;
+            padding-left: 0;
+            padding-right: 0.5em;
+            content: '\f075';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+        }
+
+        &:after {
+            content: '';
+            display: block;
+            width: 100%;
+            clear: left;
+        }
+    }
+}
+
+@media (min-width: 30em) {
+    .personalized-page-body {
+        .personalized-photo {
+            float: right;
+            margin-left: $(spacing_base);
+            margin-bottom: $(spacing_base);
+            margin-top: 0;
+            max-width: 37.5%;
+        }
+
+        blockquote {
+            max-width: 100% !important;
+        }
+    }
+}
