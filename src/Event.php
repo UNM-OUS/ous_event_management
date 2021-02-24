@@ -20,7 +20,6 @@ class Event extends Noun
     const PRIMARY_EVENT = true;
     protected $eventGroup;
     protected $signupWindows;
-    protected $billingIndex;
 
     /**
      * Used to allow events to be placed into categories on event-list pages.
@@ -31,18 +30,6 @@ class Event extends Noun
     public function category(): ?string
     {
         return null;
-    }
-
-    public function billingIndex(): BillingIndex
-    {
-        if ($this->billingIndex === null) {
-            if ($indexes = $this->cms()->helper('graph')->children('event-billing-index')) {
-                $this->billingIndex = end($indexes);
-            } else {
-                $this->billingIndex = false;
-            }
-        }
-        return $this->billingIndex ?? $this->eventGroup()->billingIndex();
     }
 
     /**

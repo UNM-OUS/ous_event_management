@@ -6,7 +6,6 @@ types:
     event-signupwindow:  ${module.namespace}\SignupWindow
     event-userlist: ${module.namespace}\UserList
     event-bouncer: Digraph\DSO\Noun
-    event-billing-index: ${module.namespace}\BillingIndex
 
 image-transform:
   driver: 

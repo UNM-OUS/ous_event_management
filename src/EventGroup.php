@@ -10,19 +10,6 @@ class EventGroup extends Page
 
     protected $allEvents;
     protected $signupWindows;
-    protected $billingIndex;
-
-    public function billingIndex(): BillingIndex
-    {
-        if ($this->billingIndex === null) {
-            if ($indexes = $this->cms()->helper('graph')->children('event-billing-index')) {
-                $this->billingIndex = end($indexes);
-            } else {
-                $this->billingIndex = false;
-            }
-        }
-        return $this->billingIndex;
-    }
 
     public function chunks(): array
     {
