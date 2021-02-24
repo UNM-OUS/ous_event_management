@@ -5,7 +5,6 @@ use Digraph\DSO\Noun;
 use Digraph\Forms\Fields\FieldValueAutocomplete;
 use Digraph\Urls\Url;
 use Formward\Fields\Input;
-use Formward\Fields\Url as FieldsUrl;
 
 /**
  * This is the primary event type, and objects of this type will be given
@@ -202,49 +201,6 @@ class Event extends Noun
                 ['event.form.preset'],
                 $this->cms()->helper('permissions')->check('form/newpreset', 'events'),
             ],
-        ];
-        $map['event_regalia_faculty'] = [
-            'label' => 'Faculty regalia options',
-            'field' => 'regalia.faculty',
-            'weight' => 200,
-            'class' => 'select',
-            'required' => true,
-            'call' => [
-                'options' => [[
-                    'required' => 'Regalia required',
-                    'optional' => 'Regalia optional',
-                    'none' => 'Informal/none',
-                ]],
-            ],
-            'tips' => [
-                'Online events should select "Informal/none"',
-            ],
-        ];
-        $map['event_regalia_student'] = [
-            'label' => 'Student regalia options',
-            'field' => 'regalia.student',
-            'weight' => 200,
-            'class' => 'select',
-            'required' => true,
-            'call' => [
-                'options' => [[
-                    'required' => 'Regalia required',
-                    'optional' => 'Regalia optional',
-                    'none' => 'Informal/none',
-                ]],
-            ],
-            'tips' => [
-                'Online events should select "Informal/none"',
-            ],
-        ];
-        $map['url'] = [
-            'label' => 'Override event URL',
-            'field' => 'url',
-            'class' => FieldsUrl::class,
-            'tips' => [
-                'Use this URL to override where public links to this event go. This is useful if you have your own existing landing page and don\'t need one here.',
-            ],
-            'weight' => 800,
         ];
         if (in_array('editor', $this->cms()->helper('users')->groups())) {
             $map['signup_grouping'] = [
