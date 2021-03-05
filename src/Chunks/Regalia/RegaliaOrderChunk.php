@@ -8,6 +8,42 @@ class RegaliaOrderChunk extends AbstractChunk
     protected $label = 'Regalia order';
     const WEIGHT = 200;
 
+    public function hook_update()
+    {
+        if (!$this->signup[$this->name]) {
+            // try to find previous signups by this user
+            $search = $this->signup->cms()->factory()->search();
+            $search->where('${dso.type} = :type AND ${signup.for} = :for');
+            $search->order('${dso.created.date} desc');
+            $search->limit(1);
+            if ($result = $search->execute(['type' => $this->signup['dso.type'],'for'=>$this->signup['signup.for']])) {
+                $result = array_pop($result);
+                $this->signup[$this->name] = $result[$this->name];
+                return;
+            }
+            // try to find user in user lists
+            if ($user = $this->userListUser()) {
+                $this->signup[$this->name] = [
+                    'degree' => [
+                        'institution' => $user['degree_institution'],
+                        'level' => $user['degree_level'],
+                        'field' => $user['degree_field']
+                    ],
+                    'size' => [
+                        'gender' => $user['regalia_gender'],
+                        'hat' => $user['regalia_capsize'],
+                        'height' => [
+                            'ft' => $user['regalia_height_feet'],,
+                            'in' => $user['regalia_height_inches'],
+                        ],
+                        'weight' => $user['regalia_weight'],
+                    ]
+                ];
+            }
+        }
+    }
+
+
     protected function buttonText_cancelEdit()
     {
         return "cancel editing";
@@ -100,7 +136,7 @@ class RegaliaOrderChunk extends AbstractChunk
             'regalia' => [
                 'label' => '',
                 'class' => RegaliaComboField::class,
-                'field' => 'regalia',
+                'field' => $this->name,
             ],
         ];
     }
