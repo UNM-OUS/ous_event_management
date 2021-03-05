@@ -10,13 +10,31 @@ use Digraph\Modules\ous_event_management\Chunks\Regalia\RegaliaOrderChunk;
 class Signup extends Noun
 {
     const FILESTORE = true;
-    const SLUG_ID_LENGTH = 6;
+    const SLUG_ID_LENGTH = 4;
     const HOOK_TRIGGER_PARENTS = false;
     const HOOK_TRIGGER_CHILDREN = false;
 
     protected $signupWindow;
     protected $allEvents;
     protected $chunks;
+
+    /**
+     * Returns a barcode containing this signup's ID only
+     *
+     * @return string
+     */
+    // public function barcode_id(): string
+    // {
+    //     return $this->barcode([
+    //         'sid' => $this['dso.id']
+    //     ]);
+    // }
+
+    // protected function barcode($data): string
+    // {
+    //     $data = json_encode($data);
+    //     return $data;
+    // }
 
     public function helper(): EventHelper
     {

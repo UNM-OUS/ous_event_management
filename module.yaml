@@ -196,6 +196,9 @@ defaultnounbytype:
   event-signupwindow:
     digraph:
       slugpattern: "[parent]/[id]"
+  event-signup:
+    digraph:
+      slugpattern: "[parent]/[id]"
 
 helpers:
   classes:
