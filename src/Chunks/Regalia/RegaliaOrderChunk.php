@@ -33,7 +33,7 @@ class RegaliaOrderChunk extends AbstractChunk
                         'gender' => $user['regalia_gender'],
                         'hat' => $user['regalia_capsize'],
                         'height' => [
-                            'ft' => $user['regalia_height_feet'],,
+                            'ft' => $user['regalia_height_feet'],
                             'in' => $user['regalia_height_inches'],
                         ],
                         'weight' => $user['regalia_weight'],
