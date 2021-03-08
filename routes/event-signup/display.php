@@ -39,9 +39,9 @@ if ($events || $windowEvents) {
     }
     foreach ($events as $event) {
         if ($event['cancelled']) {
-            echo '<div class="notification notification-warning"><strong>' . $event->link() . '</strong><br>CANCELLED</div>';
+            echo '<p class="notification notification-warning"><strong>' . $event->link() . '</strong><br>CANCELLED</p>';
         } else {
-            echo '<strong>' . $event->name() . '</strong><div class="incidental">' . $event->metaCell() . '</div>';
+            echo '<p><strong>' . $event->name() . '</strong><div class="incidental">' . $event->metaCell() . '</div></p>';
         }
     }
     // display button to change event selections

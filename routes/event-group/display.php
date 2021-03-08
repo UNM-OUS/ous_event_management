@@ -32,7 +32,7 @@ if (count($events) == 0) {
     if ($event->title() != $noun->title()) {
         echo "<h2><a href='" . $event->url() . "'>" . $event->title() . "</a></h2>";
     }
-    echo $event->metaBlock();
+    echo '<div class="digraph-card incidental">' . $event->metaCell() . '</div>';
     echo $event->body();
 } else {
     //there are multiple primary events, list them
@@ -40,7 +40,7 @@ if (count($events) == 0) {
     foreach ($events as $event) {
         echo "<div class='digraph-card'>";
         echo "<h2><a href='" . $event->url() . "'>" . $event->title() . "</a></h2>";
-        echo $event->metaBlock();
+        echo '<div class="incidental">' . $event->metaCell() . '</div>';
         echo "</div>";
     }
 }
