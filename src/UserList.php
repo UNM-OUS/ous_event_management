@@ -145,7 +145,7 @@ class UserList extends Noun
         if ($row['award category'] == 'Post Second. Cert/Dipl <1 yr.') {
             return 'Post-secondary Certificate';
         }
-        throw new \Exception("Unknown award category " . $row['award category'] . " in row identified by netid: " . $row['netid'] . ', email: ' . $row['email']);
+        return "Unknown award category";
     }
 
     function filterRowData(array $row): bool
