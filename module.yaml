@@ -29,6 +29,8 @@ strings:
       _event-management/reports: Signup reports
       _event-management/report: Signup report
       _event-management/photos: Personalized page photos
+  events:
+    notallowed: <p>You are not on the list of users allowed to use this form.</p>
 
 factory_columns:
   content:

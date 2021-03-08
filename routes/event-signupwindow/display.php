@@ -29,11 +29,11 @@ if ($mySignup = $noun->findSignupFor()) {
     } else {
         if (time() < $noun['signupwindow.time.end']) {
             $cms->helper('notifications')->printWarning(
-                'Your signup is currently incomplete. <a href="' . $mySignup->url() . '">Complete it here</a> by the signup deadline.'
+                'Your signup is currently incomplete. <a href="' . $mySignup->url() . '">Complete it here</a> by the deadline.'
             );
         } else {
             $cms->helper('notifications')->printWarning(
-                'Your signup was not completed by the signup deadline. <a href="' . $mySignup->url() . '">View it here</a>.'
+                'Your signup was not completed by the deadline. <a href="' . $mySignup->url() . '">View it here</a>.'
             );
         }
     }
@@ -57,9 +57,7 @@ if ($noun->canSignUpOthers()) {
             echo "<p><a class='cta-button red' style='text-align:center;display:block;' href='" . $u->signInUrl($package) . "'>Sign in</a></p>";
         } elseif (!$mySignup) {
             $cms->helper('notifications')->printWarning(
-                '<p>You are not on the list of users allowed to sign up through this form.</p>' .
-                '<p>If you believe this is in error, please first contact your academic advisor if you are a student.</p>' .
-                '<p>If you are not a student, or you have checked with your advisor and are sure your degree records are in Banner, please contact the Office of the University Secretary. To allow any problem to be investigated as quickly as possible, include your main campus NetID and the URL of this page.</p>'
+                $cms->helper('strings')->string('events.notallowed.extratext')
             );
         }
     }

@@ -292,6 +292,17 @@ class SignupWindow extends Noun
                 'unlisted-explanation' => 'Unlisted signup windows are not shown on public lists, and the only way to find them is to have a direct link',
             ],
         ];
+        $map['signupwindow_emails'] = [
+            'label' => 'Email messages enabled',
+            'field' => 'signupwindow.email',
+            'class' => 'checkbox',
+            'weight' => 220,
+            'required' => false,
+            'default' => true,
+            'tips' => [
+                'Uncheck this box to disable sending of automatic emails about signups',
+            ],
+        ];
         $map['signup_windowtype'] = [
             'label' => 'Type/audience',
             'field' => 'signup_windowtype',

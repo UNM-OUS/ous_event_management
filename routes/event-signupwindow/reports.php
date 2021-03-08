@@ -19,8 +19,8 @@ $form['events']->addTip('Leave blank to include all');
  * set up options from events
  */
 $eventsOptions = [];
-foreach ($window->eventGroup()->primaryEvents() + $window->eventGroup()->secondaryEvents() as $window) {
-    $eventsOptions[$window['dso.id']] = $window->name();
+foreach ($window->eventGroup()->primaryEvents() + $window->eventGroup()->secondaryEvents() as $w) {
+    $eventsOptions[$w['dso.id']] = $w->name();
 }
 $form['events']->options($eventsOptions);
 

@@ -75,6 +75,10 @@ class EventHelper extends AbstractHelper
     public function sendMail($to_or_signup, $subject, $body_html, $fromChair = false)
     {
         if ($to_or_signup instanceof Signup) {
+            if (!$to_or_signup->signupWindow()['signupwindow.email']) {
+                // signup window has notification emails disabled
+                return;
+            }
             $subject .= ' [Signup #' . $to_or_signup['dso.id'] . ']';
         }
         $subject = $this->emailCodes($subject, $to_or_signup);
