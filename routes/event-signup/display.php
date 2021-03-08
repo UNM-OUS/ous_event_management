@@ -41,7 +41,7 @@ if ($events || $windowEvents) {
         if ($event['cancelled']) {
             echo '<div class="notification notification-warning"><strong>' . $event->link() . '</strong><br>CANCELLED</div>';
         } else {
-            echo '<p><strong>' . $event->link() . '</strong><br>' . $cms->helper('strings')->dateTimeHTML($event['event.time']) . '</p>';
+            echo '<strong>' . $event->name() . '</strong><div class="incidental">' . $event->metaCell() . '</div>';
         }
     }
     // display button to change event selections
