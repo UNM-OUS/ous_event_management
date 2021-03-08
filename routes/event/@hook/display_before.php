@@ -6,7 +6,7 @@ $windows = $windows = $package->noun()->signupWindows();
 $windows = array_filter(
     $windows,
     function ($e) {
-        return $e->isOpen();
+        return !(!$e['signupwindow.unlisted'] && $e->isOpen());
     }
 );
 if ($windows) {
