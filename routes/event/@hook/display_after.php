@@ -2,11 +2,11 @@
 /**
  * List ended signup windows
  */
-$windows = $windows = $package->noun()->signupWindows();
+$windows = $package->noun()->signupWindows();
 $windows = array_filter(
     $windows,
     function ($e) {
-        return !(!$e['signupwindow.unlisted'] && !$e->isOpen());
+        return !$e->isOpen() && !$e['signupwindow.unlisted'];
     }
 );
 if ($windows) {
