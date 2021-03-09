@@ -151,8 +151,7 @@ abstract class AbstractPersonalizedPage extends AbstractChunk
     public function pageContentHash(): string
     {
         return md5(serialize([
-            $this->signup['contact.firstname'],
-            $this->signup['contact.lastname'],
+            $this->signup->name(),
             $this->signup['personalpage'],
             $this->signup['filestore.personalizedpagephoto'],
         ]));

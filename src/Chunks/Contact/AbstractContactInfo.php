@@ -17,20 +17,20 @@ abstract class AbstractContactInfo extends AbstractChunk
 
     public function hook_update()
     {
-        if (!$this->signup['contact']) {
+        if (!$this->signup[$this->name]) {
             // try to find previous signups by this user
             $search = $this->signup->cms()->factory()->search();
             $search->where('${dso.type} = :type AND ${signup.for} = :for');
             $search->order('${dso.created.date} desc');
             $search->limit(1);
-            if ($result = $search->execute(['type' => $this->signup['dso.type'],'for'=>$this->signup['signup.for']])) {
+            if ($result = $search->execute(['type' => $this->signup['dso.type'], 'for' => $this->signup['signup.for']])) {
                 $result = array_pop($result);
-                $this->signup['contact'] = $result['contact'];
+                $this->signup[$this->name] = $result[$this->name];
                 return;
             }
             // try to find user in user lists
             if ($user = $this->userListUser()) {
-                $this->signup['contact'] = [
+                $this->signup[$this->name] = [
                     'firstname' => $user['first name'],
                     'lastname' => $user['last name'],
                     'email' => $user['email'],
@@ -55,27 +55,22 @@ abstract class AbstractContactInfo extends AbstractChunk
 
     public function firstName()
     {
-        return htmlentities($this->signup['contact.firstname']);
+        return htmlentities($this->signup[$this->name . '.firstname']);
     }
 
     public function lastName()
     {
-        return htmlentities($this->signup['contact.lastname']);
+        return htmlentities($this->signup[$this->name . '.lastname']);
     }
 
     public function email()
     {
-        return htmlentities($this->signup['contact.email']);
+        return htmlentities($this->signup[$this->name . '.email']);
     }
 
     public function phone()
     {
-        return htmlentities($this->signup['contact.phone']);
-    }
-
-    public function complete(): bool
-    {
-        return $this->firstName() && $this->lastName() && $this->email();
+        return htmlentities($this->signup[$this->name . '.phone']);
     }
 
     protected function form_map(): array
@@ -83,7 +78,7 @@ abstract class AbstractContactInfo extends AbstractChunk
         return [
             'firstname' => [
                 'label' => 'First name',
-                'field' => 'contact.firstname',
+                'field' => $this->name . '.firstname',
                 'class' => 'text',
                 'weight' => 100,
                 'required' => true,
@@ -91,7 +86,7 @@ abstract class AbstractContactInfo extends AbstractChunk
             ],
             'lastname' => [
                 'label' => 'Last name',
-                'field' => 'contact.lastname',
+                'field' => $this->name . '.lastname',
                 'class' => 'text',
                 'weight' => 110,
                 'required' => true,
@@ -99,7 +94,7 @@ abstract class AbstractContactInfo extends AbstractChunk
             ],
             'email' => [
                 'label' => 'Email address',
-                'field' => 'contact.email',
+                'field' => $this->name . '.email',
                 'class' => Email::class,
                 'weight' => 200,
                 'required' => true,
@@ -110,7 +105,7 @@ abstract class AbstractContactInfo extends AbstractChunk
             ],
             'phone' => [
                 'label' => 'Phone number',
-                'field' => 'contact.phone',
+                'field' => $this->name . '.phone',
                 'class' => Phone::class,
                 'weight' => 300,
                 'required' => false,
@@ -118,7 +113,7 @@ abstract class AbstractContactInfo extends AbstractChunk
                 'tips' => [
                     'Phone numbers are optional, and will only be used to contact you if we have any questions.',
                 ],
-            ]
+            ],
         ];
     }
 

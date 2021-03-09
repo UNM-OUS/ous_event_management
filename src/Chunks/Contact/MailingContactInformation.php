@@ -18,7 +18,7 @@ class MailingContactInformation extends AbstractContactInfo
         $map = parent::form_map();
         $map['mailingaddress'] = [
             'label' => 'Mailing Address',
-            'field' => 'contact.mailingaddress',
+            'field' => $this->name . '.mailingaddress',
             'class' => MailingAddressField::class,
             'weight' => 300,
             'required' => true,
@@ -44,7 +44,7 @@ class MailingContactInformation extends AbstractContactInfo
 
     public function address(): ?array
     {
-        return array_map('\htmlentities', $this->signup['contact.mailingaddress']);
+        return array_map('\htmlentities', $this->signup[$this->name . '.mailingaddress']);
     }
 
     public function addressHTML(): string

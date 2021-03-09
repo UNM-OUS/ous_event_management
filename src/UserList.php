@@ -105,8 +105,17 @@ class UserList extends Noun
 
     function preProcessRowData(array $row): array
     {
-        $row['first name'] = @$row['first name'] ?? $row['student first name'];
-        $row['last name'] = @$row['last name'] ?? $row['student last name'];
+        if (@$row['full name'] && preg_match('/^(.+?), ([^ ]+)( .\.)?/', @$row['full name'], $matches)) {
+            $row['first name'] = $matches[2];
+            $row['last name'] = $matches[1];
+        } elseif (@$row['full name']) {
+            $name = explode(' ', $row['full name']);
+            $row['first name'] = array_shift($name);
+            $row['last name'] = array_pop($name);
+        } else {
+            $row['first name'] = @$row['first name'] ?? $row['student first name'];
+            $row['last name'] = @$row['last name'] ?? $row['student last name'];
+        }
         $row['name'] = @$row['name'] ?? $row['first name'] . ' ' . $row['last name'];
         $row['honors'] = @$row['honors'] ?? $row['commencement honors flag'];
         $row['email'] = @$row['email'] ?? $row['email address'];
