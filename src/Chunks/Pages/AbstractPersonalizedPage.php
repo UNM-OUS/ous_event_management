@@ -11,6 +11,17 @@ abstract class AbstractPersonalizedPage extends AbstractChunk
     protected $label = 'Personalized page';
     const WEIGHT = 200;
 
+    /**
+     * Since these are complete even if left blank or disabled, we just
+     * always return true here.
+     *
+     * @return boolean
+     */
+    public function complete(): bool
+    {
+        return true;
+    }
+
     protected function buttonText_cancelEdit()
     {
         return "cancel editing";
@@ -44,7 +55,7 @@ abstract class AbstractPersonalizedPage extends AbstractChunk
         if ($file = $this->pagePhoto()) {
             $out .= '<img src="' . $file->imageUrl('signup-portrait') . '" class="personalized-photo" />';
         }
-        if ($message = $this->signup['personalpage.message']) {
+        if ($message = $this->signup[$this->name . '.message']) {
             $message = $this->signup->cms()->helper('filters')->filterPreset($message, 'text-safe');
             $out .= '<blockquote>' . $message . '</blockquote>';
         }
@@ -89,7 +100,7 @@ abstract class AbstractPersonalizedPage extends AbstractChunk
 
     public function pageActive(): bool
     {
-        return !!$this->signup['personalpage.activate'];
+        return !!$this->signup[$this->name . '.activate'];
     }
 
     public function pageModeration(): ?bool
@@ -199,7 +210,7 @@ abstract class AbstractPersonalizedPage extends AbstractChunk
             ],
             'message' => [
                 'label' => 'Personalized message',
-                'field' => 'personalpage.message',
+                'field' => $this->name . '.message',
                 'class' => 'textarea',
                 'weight' => 200,
                 'required' => false,
@@ -209,7 +220,7 @@ abstract class AbstractPersonalizedPage extends AbstractChunk
             ],
             'activate' => [
                 'label' => 'Activate my personalized graduate page. Content will be made available online after moderation.',
-                'field' => 'personalpage.activate',
+                'field' => $this->name . '.activate',
                 'class' => 'checkbox',
                 'weight' => 500,
                 'default' => true,
