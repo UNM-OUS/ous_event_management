@@ -55,7 +55,7 @@ abstract class AbstractPersonalizedPage extends AbstractChunk
         if ($file = $this->pagePhoto()) {
             $out .= '<img src="' . $file->imageUrl('signup-portrait') . '" class="personalized-photo" />';
         }
-        if ($message = $this->signup[$this->name . '.message']) {
+        if ($message = $this->signup['personalpage.message']) {
             $message = $this->signup->cms()->helper('filters')->filterPreset($message, 'text-safe');
             $out .= '<blockquote>' . $message . '</blockquote>';
         }
@@ -100,7 +100,7 @@ abstract class AbstractPersonalizedPage extends AbstractChunk
 
     public function pageActive(): bool
     {
-        return !!$this->signup[$this->name . '.activate'];
+        return !!$this->signup['personalpage.activate'];
     }
 
     public function pageModeration(): ?bool
@@ -210,7 +210,7 @@ abstract class AbstractPersonalizedPage extends AbstractChunk
             ],
             'message' => [
                 'label' => 'Personalized message',
-                'field' => $this->name . '.message',
+                'field' => 'personalpage.message',
                 'class' => 'textarea',
                 'weight' => 200,
                 'required' => false,
@@ -220,7 +220,7 @@ abstract class AbstractPersonalizedPage extends AbstractChunk
             ],
             'activate' => [
                 'label' => 'Activate my personalized graduate page. Content will be made available online after moderation.',
-                'field' => $this->name . '.activate',
+                'field' => 'personalpage.activate',
                 'class' => 'checkbox',
                 'weight' => 500,
                 'default' => true,
