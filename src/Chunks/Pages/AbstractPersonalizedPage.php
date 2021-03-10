@@ -161,8 +161,10 @@ abstract class AbstractPersonalizedPage extends AbstractChunk
 
     public function pageContentHash(): string
     {
+        // warning: changing how this works will de-moderate past personal pages
         return md5(serialize([
-            $this->signup->name(),
+            $this->signup['contact.firstname'],
+            $this->signup['contact.lastname'],
             $this->signup['personalpage'],
             $this->signup['filestore.personalizedpagephoto'],
         ]));
