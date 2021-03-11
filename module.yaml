@@ -76,9 +76,6 @@ events:
       commencement-faculty:
         contact: ${module.namespace}\Chunks\Contact\FacultyContactInformation
         waiver: ${module.namespace}\Chunks\jSignature\Waiver
-      regalia:
-        contact: ${module.namespace}\Chunks\Contact\FacultyContactInformation
-        regalia: ${module.namespace}\Chunks\Regalia\RegaliaOrderChunk
 
 permissions:
   events:

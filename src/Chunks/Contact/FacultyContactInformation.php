@@ -10,9 +10,6 @@ class FacultyContactInformation extends AbstractContactInfo
     {
         $map = parent::form_map();
         $map['phone']['required'] = true;
-        $map['phone']['tips'] = [
-            'Please provide a number that will be effective for contacting you, especially if you are ordering regalia or will be hooding a doctoral student.',
-        ];
         return $map;
     }
 }

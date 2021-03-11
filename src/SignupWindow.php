@@ -334,15 +334,6 @@ class SignupWindow extends Noun
                 $this->cms()->helper('permissions')->check('form/newgrouping', 'events'),
             ],
         ];
-        $map['regalia_deadline'] = [
-            'label' => 'Regalia deadline',
-            'class' => 'datetime',
-            'field' => 'regalia_deadline',
-            'weight' => 300,
-            'tips' => [
-                'If entered, notices about the regalia waitlist will be automatically generated and change after this deadline.'
-            ]
-        ];
         return $map;
     }
 

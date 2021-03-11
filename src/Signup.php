@@ -5,7 +5,6 @@ use Digraph\DSO\Noun;
 use Digraph\Modules\ous_event_management\Chunks\Contact\AbstractContactInfo;
 use Digraph\Modules\ous_event_management\Chunks\Degrees\AbstractDegrees;
 use Digraph\Modules\ous_event_management\Chunks\Pages\AbstractPersonalizedPage;
-use Digraph\Modules\ous_event_management\Chunks\Regalia\RegaliaOrderChunk;
 
 class Signup extends Noun
 {
@@ -197,22 +196,6 @@ class Signup extends Noun
         return false;
     }
 
-    public function regaliaRequirement(): string
-    {
-        $return = 'none';
-        $type = $this->signupWindow()['signup_windowtype'];
-        foreach ($this->allEvents() as $event) {
-            $setting = $event['regalia.' . $type];
-            if ($setting == 'required') {
-                return 'required';
-            }
-            if ($setting == 'optional') {
-                $return = 'optional';
-            }
-        }
-        return $return;
-    }
-
     public function chunks(): array
     {
         if ($this->chunks === null) {
@@ -306,13 +289,7 @@ class Signup extends Noun
 
     protected function myChunks(): array
     {
-        $chunks = [];
-        if ($this->regaliaRequirement() == 'required') {
-            $chunks['regalia'] = RegaliaOrderChunk::class;
-        } elseif ($this->regaliaRequirement() == 'optional') {
-            $chunks['regalia'] = RegaliaOrderChunk::class;
-        }
-        return $chunks;
+        return [];
     }
 
     public function signupWindow(): ?SignupWindow
