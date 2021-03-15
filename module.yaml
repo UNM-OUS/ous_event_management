@@ -202,4 +202,4 @@ defaultnounbytype:
 helpers:
   classes:
     events: ${module.namespace}\EventHelper
-    jostens: ${module.namespace}\Jostens\JostensHelper
+
