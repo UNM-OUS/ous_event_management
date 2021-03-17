@@ -113,13 +113,13 @@ class UserList extends Noun
             $row['first name'] = array_shift($name);
             $row['last name'] = array_pop($name);
         } else {
-            $row['first name'] = @$row['first name'] ?? $row['student first name'];
-            $row['last name'] = @$row['last name'] ?? $row['student last name'];
+            $row['first name'] = @$row['first name'] ?? @$row['student first name'];
+            $row['last name'] = @$row['last name'] ?? @$row['student last name'];
         }
-        $row['name'] = @$row['name'] ?? $row['first name'] . ' ' . $row['last name'];
-        $row['honors'] = @$row['honors'] ?? $row['commencement honors flag'];
-        $row['email'] = @$row['email'] ?? $row['email address'];
-        $row['phone'] = @$row['phone'] ?? $row['phone number'];
+        $row['name'] = @$row['name'] ?? @$row['first name'] . ' ' . @$row['last name'];
+        $row['honors'] = @$row['honors'] ?? @$row['commencement honors flag'];
+        $row['email'] = @$row['email'] ?? @$row['email address'];
+        $row['phone'] = @$row['phone'] ?? @$row['phone number'];
         $row['category'] = $this->degreeCategory($row);
         if (@$row['graduation status'] == 'Hold Pending') {
             $row['graduation status'] = "Pending";
@@ -130,29 +130,31 @@ class UserList extends Noun
 
     function degreeCategory(array $row): string
     {
-        if ($row['award category'] == 'Baccalaureate Degree') {
-            return "Bachelor";
-        }
-        if ($row['award category'] == 'Associate Degree') {
-            return "Associate";
-        }
-        if ($row['award category'] == 'Masters Degree') {
-            return 'Graduate';
-        }
-        if ($row['award category'] == 'Doctoral Degree') {
-            return 'Graduate';
-        }
-        if ($row['award category'] == 'Post-Masters Degree') {
-            return 'Graduate';
-        }
-        if ($row['award category'] == 'First-Professional Degree') {
-            return 'Graduate';
-        }
-        if ($row['award category'] == 'Post Second. Cert/Dipl >1 < 2') {
-            return 'Post-secondary Certificate';
-        }
-        if ($row['award category'] == 'Post Second. Cert/Dipl <1 yr.') {
-            return 'Post-secondary Certificate';
+        if (@$row['award category']) {
+            if ($row['award category'] == 'Baccalaureate Degree') {
+                return "Bachelor";
+            }
+            if ($row['award category'] == 'Associate Degree') {
+                return "Associate";
+            }
+            if ($row['award category'] == 'Masters Degree') {
+                return 'Graduate';
+            }
+            if ($row['award category'] == 'Doctoral Degree') {
+                return 'Graduate';
+            }
+            if ($row['award category'] == 'Post-Masters Degree') {
+                return 'Graduate';
+            }
+            if ($row['award category'] == 'First-Professional Degree') {
+                return 'Graduate';
+            }
+            if ($row['award category'] == 'Post Second. Cert/Dipl >1 < 2') {
+                return 'Post-secondary Certificate';
+            }
+            if ($row['award category'] == 'Post Second. Cert/Dipl <1 yr.') {
+                return 'Post-secondary Certificate';
+            }
         }
         return "Unknown award category";
     }
