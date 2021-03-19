@@ -20,6 +20,11 @@ class Event extends Noun
     protected $eventGroup;
     protected $signupWindows;
 
+    public function allSignups(): array
+    {
+        return $this->cms()->helper('graph')->children($this['dso.id'], 'event-event-signup');
+    }
+
     /**
      * Used to allow events to be placed into categories on event-list pages.
      * Returns null to be in the default/no category, at the top.

@@ -233,7 +233,7 @@ class SignupWindow extends Noun
         }
     }
 
-    public function allSignups(string $owner = null): array
+    public function allSignups(): array
     {
         return $this->cms()->helper('graph')->children($this['dso.id'], 'event-signupwindow-signup');
     }
