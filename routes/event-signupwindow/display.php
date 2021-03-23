@@ -57,7 +57,7 @@ if ($noun->canSignUpOthers()) {
             echo "<p><a class='cta-button red' style='text-align:center;display:block;' href='" . $u->signInUrl($package) . "'>Sign in</a></p>";
         } elseif (!$mySignup) {
             $cms->helper('notifications')->printWarning(
-                $cms->helper('strings')->string('events.notallowed.extratext')
+                $cms->helper('strings')->string('events.notallowed')
             );
         }
     }

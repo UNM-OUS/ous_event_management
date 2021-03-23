@@ -2,7 +2,6 @@
 namespace Digraph\Modules\ous_event_management;
 
 use Digraph\DSO\Noun;
-use Digraph\Forms\Fields\FieldValueAutocomplete;
 use Digraph\Urls\Url;
 use Formward\Fields\Input;
 
@@ -175,7 +174,7 @@ class Event extends Noun
         $map['location'] = [
             'label' => 'Event location',
             'field' => 'location',
-            'class' => FieldValueAutocomplete::class,
+            'class' => 'text',
             'extraConstructArgs' => [
                 ['convocation'], //types
                 ['location'], //fields,

@@ -83,6 +83,7 @@ permissions:
     form/newpreset: [deny all, allow group admin]
     form/newgrouping: [deny all, allow group admin]
     form/newsignupwindowtype: [deny all, allow group admin]
+    form/signupothers: [deny all]
   url:
     # control panel
     _event-management/*: [deny all, allow group editor]

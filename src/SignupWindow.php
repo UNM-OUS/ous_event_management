@@ -95,6 +95,9 @@ class SignupWindow extends Noun
         if ($p->checkUrl($this->url('edit'))) {
             // user can edit window, so signups are unrestricted
             return true;
+        } elseif ($p->check('form/signupothers', 'events')) {
+            // user has events: form/signupothers permissions
+            return true;
         } else {
             return false;
         }
