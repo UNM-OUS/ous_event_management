@@ -83,13 +83,11 @@ permissions:
     form/newpreset: [deny all, allow group admin]
     form/newgrouping: [deny all, allow group admin]
     form/newsignupwindowtype: [deny all, allow group admin]
-    form/signupothers: [deny all]
+    form/signupothers: [deny all, allow group admin]
   url:
     # control panel
     _event-management/*: [deny all, allow group editor]
-    _event-management/display: [allow group ucam]
     _event-management/reportbuilder: [deny all, allow group admin]
-    _event-management/photos: [allow group ucam]
     # basic noun permissions
     event-group/*: [deny all, allow group admin]
     event-signupwindow/*: [deny all, allow group admin]
@@ -117,6 +115,8 @@ permissions:
     event-signup/event-selection: [allow all]
     event-signup/personalpage: [allow all]
     event-signup/personalpage-preview: [allow group editor]
+    event-signup/edit: [allow group editor]
+    event-signup/delete: [allow group editor]
     # event-userlist
     event-userlist/*: [deny all]
     event-userlist/edit: [allow group admin]
