@@ -88,28 +88,22 @@ permissions:
     # control panel
     _event-management/*: [deny all, allow group editor]
     _event-management/reportbuilder: [deny all, allow group admin]
-    # basic noun permissions
-    event-group/*: [deny all, allow group admin]
-    event-signupwindow/*: [deny all, allow group admin]
-    event-signup/*: [deny all, allow group admin]
-    event/*: [deny all, allow group admin]
     # event-group
-    event-group/display: [allow all]
     event-group/secondary-events: [allow all]
     event-group/add: [allow group editor]
     event-group/edit: [allow group editor]
     # event
-    event/display: [allow all]
     event/report: [allow group editor]
-    event/reports: [allow group editor]
+    event/edit: [allow group editor]
+    event/delete: [allow group editor]
     # event-signupwindow
-    event-signupwindow/display: [allow group user]
     event-signupwindow/signup: [allow group user]
     event-signupwindow/userlists: [allow group editor]
     event-signupwindow/invited-emails: [allow group editor]
     event-signupwindow/reports: [allow group editor]
+    event-signupwindow/edit: [allow group editor]
+    event-signupwindow/delete: [allow group editor]
     # event-signup
-    event-signup/display: [allow all]
     event-signup/status: [allow all]
     event-signup/chunk: [allow all]
     event-signup/event-selection: [allow all]
@@ -119,11 +113,8 @@ permissions:
     event-signup/delete: [allow group editor]
     # event-userlist
     event-userlist/*: [deny all]
+    event-userlist/display: [allow group editor]
     event-userlist/edit: [allow group admin]
-    # event-billing-index
-    event-billing-index/display: [deny all, allow group editor]
-    # global event type permissions
-    '*/event-admin': [allow group editor]
   add:
     # disallow adding event types
     '*/event': [deny all]
