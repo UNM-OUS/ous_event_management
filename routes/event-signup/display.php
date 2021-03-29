@@ -23,14 +23,14 @@ if ($events || $windowEvents) {
     echo "<div class='signup-chunk-label'>Events</div>";
     // verify events
     foreach ($events as $e) {
+        $error = false;
         if (!in_array($e, $windowEvents)) {
             $cms->helper('notifications')->printError(
-                'There is a mismatch between this signup\'s event and the available events.'
+                'This signup indicates attendance for ' . $e->link() . ' which is no longer associated with this signup form.'
             );
-            if ($signup->allowUpdate()) {
-                echo "<p><a href='" . $signup->url('event-selection') . "'>Please update event selections to continue</a></p>";
-                return;
-            }
+        }
+        if ($error && $signup->allowUpdate()) {
+            echo "<p><a href='" . $signup->url('event-selection') . "'>Please update event selections</a></p>";
         }
     }
     // display event list
