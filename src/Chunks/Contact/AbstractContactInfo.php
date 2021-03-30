@@ -99,9 +99,6 @@ abstract class AbstractContactInfo extends AbstractChunk
                 'weight' => 200,
                 'required' => true,
                 'default' => $this->email(),
-                'tips' => [
-                    'This email address will only be used to deliver necessary notifications regarding your signup, or to contact you if we have any questions.',
-                ],
             ],
             'phone' => [
                 'label' => 'Phone number',
@@ -110,9 +107,6 @@ abstract class AbstractContactInfo extends AbstractChunk
                 'weight' => 300,
                 'required' => false,
                 'default' => $this->phone(),
-                'tips' => [
-                    'Phone numbers are optional, and will only be used to contact you if we have any questions.',
-                ],
             ],
         ];
     }
