@@ -76,10 +76,12 @@ permissions:
     event-group/secondary-events: [allow all]
     event-group/add: [allow group editor]
     event-group/edit: [allow group editor]
+    event-group/reports: [allow group editor]
     # event
     event/report: [allow group editor]
     event/edit: [allow group editor]
     event/delete: [allow group editor]
+    event/reports: [allow group editor]
     # event-signupwindow
     event-signupwindow/signup: [allow group user]
     event-signupwindow/userlists: [allow group editor]
@@ -87,6 +89,7 @@ permissions:
     event-signupwindow/reports: [allow group editor]
     event-signupwindow/edit: [allow group editor]
     event-signupwindow/delete: [allow group editor]
+    event-signupwindow/reports: [allow group editor]
     # event-signup
     event-signup/status: [allow all]
     event-signup/chunk: [allow all]
