@@ -89,7 +89,6 @@ permissions:
     event-signupwindow/reports: [allow group editor]
     event-signupwindow/edit: [allow group editor]
     event-signupwindow/delete: [allow group editor]
-    event-signupwindow/reports: [allow group editor]
     # event-signup
     event-signup/status: [allow all]
     event-signup/chunk: [allow all]
