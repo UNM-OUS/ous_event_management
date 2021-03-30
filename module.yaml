@@ -59,23 +59,7 @@ events:
       signup_standalone_complete: 'signup_standalone_complete: Sent automatically when a standalone signup becomes complete'
       signup_page_approved: 'signup_page_approved: Sent automatically when a signup is approved in moderation'
       signup_page_denied: 'signup_page_denied: Sent automatically when a signup is denied in moderation'
-  forms:
-    presets:
-      gradstream-students:
-        contact: ${module.namespace}\Chunks\Contact\ContactInformation
-        degree: ${module.namespace}\Chunks\Degrees\AllDegrees
-        personalizedpage: ${module.namespace}\Chunks\Pages\GraduatePage
-        waiver: ${module.namespace}\Chunks\Old\WaiverOnline
-      student-pages-2021:
-        contact: ${module.namespace}\Chunks\Contact\ContactInformation
-        degree: ${module.namespace}\Chunks\Degrees\AllDegrees
-        personalizedpage: ${module.namespace}\Chunks\Pages\GraduatePage
-        waiver: ${module.namespace}\Chunks\jSignature\WaiverOnline
-      tassel-giveaway:
-        contact: ${module.namespace}\Chunks\Contact\MailingContactInformation
-      commencement-faculty:
-        contact: ${module.namespace}\Chunks\Contact\FacultyContactInformation
-        waiver: ${module.namespace}\Chunks\jSignature\Waiver
+    forms: []
 
 permissions:
   events:
