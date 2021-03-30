@@ -8,24 +8,12 @@ $s = $cms->helper('strings');
 echo $noun->body();
 
 /**
- * List current signup windows
- */
-if ($windows = $noun->currentSignupWindows()) {
-    echo "<div class='notification notification-confirmation'>";
-    echo "<h2>Sign up</h2>";
-    foreach ($windows as $w) {
-        echo "<div class=''><strong>" . $w->link() . "</strong> closes " . $s->dateTimeHTML($w['signupwindow.time.end']) . "</div>";
-    }
-    echo "</div>";
-}
-
-/**
  * List primary events
  */
 $events = $noun->primaryEvents();
 if (count($events) == 0) {
     // there are no primary events
-    $cms->helper('notifications')->printWarning('No primary events defined');
+    // $cms->helper('notifications')->printWarning('No primary events defined');
 } elseif (count($events) == 1) {
     // there is one primary event, just embed its info on the page
     $event = reset($events);
@@ -43,6 +31,18 @@ if (count($events) == 0) {
         echo '<div class="incidental">' . $event->metaCell() . '</div>';
         echo "</div>";
     }
+}
+
+/**
+ * List current signup windows
+ */
+if ($windows = $noun->currentSignupWindows()) {
+    echo "<div class='notification notification-confirmation'>";
+    echo "<h2>Sign up</h2>";
+    foreach ($windows as $w) {
+        echo "<div class=''><strong>" . $w->link() . "</strong> closes " . $s->dateTimeHTML($w['signupwindow.time.end']) . "</div>";
+    }
+    echo "</div>";
 }
 
 /** display secondary events */
