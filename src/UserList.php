@@ -25,7 +25,6 @@ class UserList extends Noun
         'phone number',
         'student first name',
         'student last name',
-        'graduation status',
         'academic period',
         'commencement honors flag',
         'award category',
