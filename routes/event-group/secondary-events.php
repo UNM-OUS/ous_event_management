@@ -19,7 +19,7 @@ foreach ($categories as $cat => $events) {
     if ($cat != '_uncategorized') {
         echo "<h2>$cat</h2>";
     }
-    echo "<table>";
+    echo "<table style='width:100%;'>";
     foreach ($events as $event) {
         if ($event['cancelled']) {
             echo "<tr class='highlighted-warning'>";
@@ -28,7 +28,7 @@ foreach ($categories as $cat => $events) {
             echo "</tr>";
         } else {
             echo "<tr>";
-            echo "<td><strong><a href='" . $event->linkUrl() . "'>" . $event->title() . "</a></strong></td>";
+            echo "<td width='60%'><strong><a href='" . $event->linkUrl() . "'>" . $event->title() . "</a></strong></td>";
             echo "<td><div class='incidental'>";
             echo $event->metaCell();
             echo "</div></td>";

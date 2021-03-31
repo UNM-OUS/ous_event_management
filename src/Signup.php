@@ -17,24 +17,6 @@ class Signup extends Noun
     protected $allEvents;
     protected $chunks;
 
-    /**
-     * Returns a barcode containing this signup's ID only
-     *
-     * @return string
-     */
-    // public function barcode_id(): string
-    // {
-    //     return $this->barcode([
-    //         'sid' => $this['dso.id']
-    //     ]);
-    // }
-
-    // protected function barcode($data): string
-    // {
-    //     $data = json_encode($data);
-    //     return $data;
-    // }
-
     public function helper(): EventHelper
     {
         return $this->cms()->helper('events');
@@ -115,16 +97,6 @@ class Signup extends Noun
     {
         foreach ($this->chunks() as $chunk) {
             if ($chunk instanceof AbstractContactInfo) {
-                return $chunk;
-            }
-        }
-        return null;
-    }
-
-    public function degrees(): ?AbstractDegrees
-    {
-        foreach ($this->chunks() as $chunk) {
-            if ($chunk instanceof AbstractDegrees) {
                 return $chunk;
             }
         }

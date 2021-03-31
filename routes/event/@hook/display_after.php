@@ -10,7 +10,6 @@ $windows = array_filter(
     }
 );
 if ($windows) {
-    echo "<div class='digraph-card incidental'>";
     echo "<h2>Closed or pending signup windows</h2>";
     echo "<ul>";
     foreach ($windows as $w) {
@@ -19,5 +18,4 @@ if ($windows) {
         echo "<li>" . $link->html() . "</li>";
     }
     echo "</ul>";
-    echo "</div>";
 }

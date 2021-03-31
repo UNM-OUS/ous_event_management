@@ -10,14 +10,10 @@ $windows = array_filter(
     }
 );
 if ($windows) {
+    $s = $cms->helper('strings');
     echo "<div class='notification notification-confirmation'>";
-    echo "<h2>Sign up</h2>";
-    echo "<ul>";
     foreach ($windows as $w) {
-        $link = $w->url();
-        $link['args.from'] = $package['noun.dso.id'];
-        echo "<li>" . $link->html() . "</li>";
+        echo "<p><strong>" . $w->link() . "</strong><br>closes " . $s->dateTimeHTML($w['signupwindow.time.end']) . "</p>";
     }
-    echo "</ul>";
     echo "</div>";
 }

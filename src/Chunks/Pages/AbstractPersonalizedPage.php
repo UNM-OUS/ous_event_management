@@ -72,7 +72,7 @@ abstract class AbstractPersonalizedPage extends AbstractChunk
         }
         foreach ($degrees as $d) {
             $out .= '<div class="digraph-card">';
-            $out .= '<div><strong>' . @$d['degree'] . '</strong></div>';
+            $out .= '<div><strong>' . @$d['program'] . '</strong></div>';
             if (@$d['major']) {
                 $out .= '<div><em>Major:</em> ' . $d['major'];
                 if (@$d['second major']) {
@@ -90,8 +90,8 @@ abstract class AbstractPersonalizedPage extends AbstractChunk
             if (@$d['honors']) {
                 $out .= '<div><em>University Honors:</em> ' . $d['honors'] . '</div>';
             }
-            if (@$d['academic period']) {
-                $out .= '<div><em>' . $d['graduation status'] . ' ' . $d['academic period'] . '</em></div>';
+            if (@$d['semester']) {
+                $out .= '<div><em>' . $d['graduation status'] . ' ' . $d['semester'] . '</em></div>';
             }
             $out .= '</div>';
         }
@@ -161,11 +161,13 @@ abstract class AbstractPersonalizedPage extends AbstractChunk
 
     public function pageContentHash(): string
     {
+        $page = $this->signup['personalpage'];
+        unset($page['chunk']);
         // warning: changing how this works will de-moderate past personal pages
         return md5(serialize([
             $this->signup['contact.firstname'],
             $this->signup['contact.lastname'],
-            $this->signup['personalpage'],
+            $page,
             $this->signup['filestore.personalizedpagephoto'],
         ]));
     }

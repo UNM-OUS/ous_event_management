@@ -1,3 +1,9 @@
+<style>
+article.type_event-group > h1:first-child {
+    display: none;
+}
+</style>
+
 <?php
 $noun = $package->noun();
 $s = $cms->helper('strings');
@@ -6,6 +12,18 @@ $s = $cms->helper('strings');
  * Event body
  */
 echo $noun->body();
+
+/**
+ * List current signup windows
+ */
+if ($windows = $noun->currentSignupWindows()) {
+    echo "<div class='notification notification-confirmation'>";
+    foreach ($windows as $w) {
+        echo "<p><strong>" . $w->link() . "</strong><br>closes " . $s->dateTimeHTML($w['signupwindow.time.end']) . "</p>";
+    }
+    echo "</div>";
+    echo "<hr>";
+}
 
 /**
  * List primary events
@@ -22,6 +40,7 @@ if (count($events) == 0) {
     }
     echo '<div class="digraph-card incidental">' . $event->metaCell() . '</div>';
     echo $event->body();
+    echo "<hr>";
 } else {
     //there are multiple primary events, list them
     echo "<h2>Events</h2>";
@@ -30,19 +49,8 @@ if (count($events) == 0) {
         echo "<h2><a href='" . $event->url() . "'>" . $event->title() . "</a></h2>";
         echo '<div class="incidental">' . $event->metaCell() . '</div>';
         echo "</div>";
+        echo "<hr>";
     }
-}
-
-/**
- * List current signup windows
- */
-if ($windows = $noun->currentSignupWindows()) {
-    echo "<div class='notification notification-confirmation'>";
-    echo "<h2>Sign up</h2>";
-    foreach ($windows as $w) {
-        echo "<div class=''><strong>" . $w->link() . "</strong> closes " . $s->dateTimeHTML($w['signupwindow.time.end']) . "</div>";
-    }
-    echo "</div>";
 }
 
 /** display secondary events */
@@ -53,26 +61,30 @@ if ($noun->secondaryEvents()) {
     echo "<p>$link</p>";
 }
 
+echo "<div class='digraph-card incidental' style='max-width:100%;'>";
+
 /**
  * List upcoming signup windows
  */
 if ($windows = $noun->upcomingSignupWindows()) {
-    echo "<div class='notification notification-notice'>";
-    echo "<h2>Upcoming signup windows</h2>";
+    echo "<h2 style='text-align:center;'>Upcoming signup windows</h2>";
+    echo "<ul>";
     foreach ($windows as $w) {
-        echo "<div class=''><strong>" . $w->link() . "</strong> opens " . $s->dateTimeHTML($w['signupwindow.time.start']) . "</div>";
+        echo "<li><strong>" . $w->link() . "</strong><br>opens " . $s->dateTimeHTML($w['signupwindow.time.start']) . "</li>";
     }
-    echo "</div>";
+    echo "</ul>";
 }
 
 /**
  * List past signup windows
  */
 if ($windows = $noun->pastSignupWindows()) {
-    echo "<div class='digraph-card'>";
-    echo "<h2>Past signup windows</h2>";
+    echo "<h2 style='text-align:center;'>Past signup windows</h2>";
+    echo "<ul>";
     foreach ($windows as $w) {
-        echo "<div class=''><strong>" . $w->link() . "</strong> closed " . $s->dateTimeHTML($w['signupwindow.time.end']) . "</div>";
+        echo "<li><strong>" . $w->link() . "</strong><br>closed " . $s->dateTimeHTML($w['signupwindow.time.end']) . "</li>";
     }
-    echo "</div>";
+    echo "</ul>";
 }
+
+echo "</div>";

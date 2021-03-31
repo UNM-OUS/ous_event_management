@@ -98,9 +98,8 @@ permissions:
     event-signup/edit: [allow group editor]
     event-signup/delete: [allow group editor]
     # event-userlist
-    event-userlist/*: [deny all]
-    event-userlist/display: [allow group editor]
-    event-userlist/edit: [allow group admin]
+    event-userlist/display: [deny all, allow group editor]
+    event-userlist/edit: [deny all, allow group admin]
   add:
     # disallow adding event types
     '*/event': [deny all]
