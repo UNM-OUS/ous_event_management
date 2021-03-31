@@ -31,7 +31,6 @@ class UserList extends Noun
         'award category',
         'confidentiality indicator',
         'outcomes_count',
-        'campus',
     ];
 
     /**
