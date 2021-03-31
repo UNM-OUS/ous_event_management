@@ -20,6 +20,20 @@ class UserList extends Noun
     const FILESTORE_PATH = 'users';
     const FILESTORE_FILE_CLASS = FileStoreFile::class;
 
+    const CLEANUP = [
+        'email address',
+        'phone number',
+        'student first name',
+        'student last name',
+        'graduation status',
+        'academic period',
+        'commencement honors flag',
+        'award category',
+        'confidentiality indicator',
+        'outcomes_count',
+        'campus',
+    ];
+
     /**
      * Search for a the first result matching a given email or NetID
      *
@@ -125,34 +139,43 @@ class UserList extends Noun
             $row['graduation status'] = "Pending";
         }
         $row['semester'] = @$row['academic period'];
+        $this->cleanRowData($row);
         return $row;
+    }
+
+    function cleanRowData(array &$row)
+    {
+        foreach (static::CLEANUP as $k) {
+            unset($row[$k]);
+        }
     }
 
     function degreeCategory(array $row): string
     {
-        if (@$row['award category']) {
-            if ($row['award category'] == 'Baccalaureate Degree') {
+        if ($cat = @$row['award category']) {
+            unset($row['award category']);
+            if ($cat == 'Baccalaureate Degree') {
                 return "Bachelor";
             }
-            if ($row['award category'] == 'Associate Degree') {
+            if ($cat == 'Associate Degree') {
                 return "Associate";
             }
-            if ($row['award category'] == 'Masters Degree') {
+            if ($cat == 'Masters Degree') {
                 return 'Graduate';
             }
-            if ($row['award category'] == 'Doctoral Degree') {
+            if ($cat == 'Doctoral Degree') {
                 return 'Graduate';
             }
-            if ($row['award category'] == 'Post-Masters Degree') {
+            if ($cat == 'Post-Masters Degree') {
                 return 'Graduate';
             }
-            if ($row['award category'] == 'First-Professional Degree') {
+            if ($cat == 'First-Professional Degree') {
                 return 'Graduate';
             }
-            if ($row['award category'] == 'Post Second. Cert/Dipl >1 < 2') {
+            if ($cat == 'Post Second. Cert/Dipl >1 < 2') {
                 return 'Post-secondary Certificate';
             }
-            if ($row['award category'] == 'Post Second. Cert/Dipl <1 yr.') {
+            if ($cat == 'Post Second. Cert/Dipl <1 yr.') {
                 return 'Post-secondary Certificate';
             }
         }
