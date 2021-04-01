@@ -19,7 +19,7 @@ echo $noun->body();
 if ($windows = $noun->currentSignupWindows()) {
     echo "<div class='notification notification-confirmation'>";
     foreach ($windows as $w) {
-        echo "<p><strong>" . $w->link() . "</strong><br>closes " . $s->dateTimeHTML($w['signupwindow.time.end']) . "</p>";
+        echo "<p><strong>" . $w->link() . "</strong><div class='incidental'>closes " . $s->dateTimeHTML($w['signupwindow.time.end']) . "</div></p>";
     }
     echo "</div>";
     echo "<hr>";
@@ -59,6 +59,11 @@ if ($noun->secondaryEvents()) {
     $link->addClass('cta-button');
     $link->attr('style', 'display:block;');
     echo "<p>$link</p>";
+}
+
+// we're done if there are no past or upcoming windows
+if (!$noun->pastSignupWindows() && !$noun->upcomingSignupWindows()) {
+    return;
 }
 
 echo "<div class='digraph-card incidental' style='max-width:100%;'>";

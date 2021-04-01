@@ -35,7 +35,7 @@ if ($events || $windowEvents) {
     }
     // display event list
     if (!$events) {
-        $cms->helper('notifications')->printWarning('No events selected');
+        $cms->helper('notifications')->printNotice('No events selected');
     }
     foreach ($events as $event) {
         if ($event['cancelled']) {

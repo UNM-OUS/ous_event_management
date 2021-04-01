@@ -9,7 +9,7 @@ use Digraph\Modules\ous_event_management\Chunks\Pages\AbstractPersonalizedPage;
 class Signup extends Noun
 {
     const FILESTORE = true;
-    const SLUG_ID_LENGTH = 4;
+    const SLUG_ID_LENGTH = 8;
     const HOOK_TRIGGER_PARENTS = false;
     const HOOK_TRIGGER_CHILDREN = false;
 
