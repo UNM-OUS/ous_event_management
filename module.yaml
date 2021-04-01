@@ -179,4 +179,3 @@ defaultnounbytype:
 helpers:
   classes:
     events: ${module.namespace}\EventHelper
-

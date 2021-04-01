@@ -13,7 +13,7 @@ if ($windows) {
     $s = $cms->helper('strings');
     echo "<div class='notification notification-confirmation'>";
     foreach ($windows as $w) {
-        echo "<p><strong>" . $w->link() . "</strong><div class='incidental'>closes " . $s->dateTimeHTML($w['signupwindow.time.end']) . "</div></p>";
+        echo "<p><strong>" . $w->link() . "</strong><br><span class='incidental'>closes " . $s->dateTimeHTML($w['signupwindow.time.end']) . "</span></p>";
     }
     echo "</div>";
 }

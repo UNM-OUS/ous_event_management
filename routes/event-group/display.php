@@ -14,18 +14,6 @@ $s = $cms->helper('strings');
 echo $noun->body();
 
 /**
- * List current signup windows
- */
-if ($windows = $noun->currentSignupWindows()) {
-    echo "<div class='notification notification-confirmation'>";
-    foreach ($windows as $w) {
-        echo "<p><strong>" . $w->link() . "</strong><div class='incidental'>closes " . $s->dateTimeHTML($w['signupwindow.time.end']) . "</div></p>";
-    }
-    echo "</div>";
-    echo "<hr>";
-}
-
-/**
  * List primary events
  */
 $events = $noun->primaryEvents();
@@ -43,22 +31,29 @@ if (count($events) == 0) {
     echo "<hr>";
 } else {
     //there are multiple primary events, list them
-    echo "<h2>Events</h2>";
     foreach ($events as $event) {
-        echo "<div class='digraph-card'>";
+        echo "<div class='digraph-card event-card' id='event-card-" . $event['dso.id'] . "'>";
         echo "<h2><a href='" . $event->url() . "'>" . $event->title() . "</a></h2>";
         echo '<div class="incidental">' . $event->metaCell() . '</div>';
         echo "</div>";
-        echo "<hr>";
     }
+}
+
+/**
+ * List current signup windows
+ */
+if ($windows = $noun->currentSignupWindows()) {
+    echo "<div class='notification notification-confirmation'>";
+    foreach ($windows as $w) {
+        echo "<p><strong>" . $w->link() . "</strong><br><span class='incidental'>closes " . $s->dateTimeHTML($w['signupwindow.time.end']) . "</span></p>";
+    }
+    echo "</div>";
 }
 
 /** display secondary events */
 if ($noun->secondaryEvents()) {
     $link = $noun->link(null, 'secondary-events');
-    $link->addClass('cta-button');
-    $link->attr('style', 'display:block;');
-    echo "<p>$link</p>";
+    echo "<div class='digraph-card event-card' id='departmental-events'><h2>$link</h2><p class='incidental'>Click for a list of departmental graduation events</p></div>";
 }
 
 // we're done if there are no past or upcoming windows
