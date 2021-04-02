@@ -49,9 +49,13 @@ abstract class AbstractChunk implements ChunkInterface
 
     protected function buildForm($forValidation = false): Form
     {
+        $map = $this->form_map();
+        usort($map, function ($a, $b) {
+            return $a['weight'] - $b['weight'];
+        });
         return $this->signup->cms()->helper('forms')->mapForm(
             $this->signup,
-            $this->form_map(),
+            $map,
             $this->name . ($forValidation ? '_validation' : '')
         );
     }
