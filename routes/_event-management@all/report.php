@@ -1,5 +1,6 @@
 <?php
 
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use Digraph\CMS;
 use Digraph\DSO\Noun as DSONoun;
 use Digraph\Modules\ous_event_management\Event;
@@ -8,7 +9,7 @@ use Digraph\Modules\ous_event_management\Signup;
 use Digraph\Modules\ous_event_management\SignupWindow;
 
 $package['response.ttl'] = 3600;
-// $package->cache_noStore();
+$package->cache_noStore();
 
 // load up preset
 if ($package['url.args.preset']) {
@@ -122,34 +123,108 @@ $columns = array_filter(array_map(
     preg_split('/[\r\n]+/', $r['c'])
 ));
 
+// construct values
+$search->order($r['s']);
+$hash = md5('');
+$results = array_map(
+    function (Signup $signup) use ($cms, $columns, &$hash) {
+        $row = [];
+        foreach ($columns as $c) {
+            $value = '';
+            if (substr($c['src'], -2) == '()') {
+                $m = substr($c['src'], 0, strlen($c['src']) - 2);
+                if (method_exists($signup, $m)) {
+                    $value = call_user_func([$signup, $m]);
+                } else {
+                    $value = 'function ' . $m . ' not found';
+                }
+            } else {
+                $value = $signup[$c['src']];
+            }
+            if ($fn = $c['fmt']) {
+                $value = $fn($value, $signup, $cms);
+            }
+            $row[] = $value;
+        }
+        $row = array_map(
+            function($c) {
+                if (is_array($c)) {
+                    $c[0] = strval($c[0]);
+                    $c[1] = strval($c[1]);
+                }else {
+                    $c = strval($c);
+                }
+                return $c;
+            },
+            $row
+        );
+        $hash = md5($hash . serialize($row));
+        return $row;
+    },
+    $search->execute()
+);
+
+// create spreadsheet
+/** @var \Digraph\Media\MediaHelper */
+$media = $cms->helper('media');
+$asset = $media->create(
+    $r['t'] . ' '.crc32(serialize($r)).'_' . date('YmdHi') . '.xlsx',
+    function ($dest) use ($cms, $columns, &$results) {
+        $writer = WriterEntityFactory::createXLSXWriter();
+        $cms->helper('filesystem')->put('', $dest, true);
+        $writer->openToFile($dest);
+        // create first row
+        $writer->addRow(
+            WriterEntityFactory::createRow(
+                array_map(
+                    function ($c) {
+                        return WriterEntityFactory::createCell($c['title']);
+                    },
+                    $columns
+                )
+            )
+        );
+        // use results to build the rest
+        foreach ($results as $row) {
+            $writer->addRow(
+                WriterEntityFactory::createRow(
+                    array_map(
+                        function ($c) {
+                            if (is_array($c)) {
+                                $v = strval($c[1]);
+                            } else {
+                                $v = strval($c);
+                            }
+                            return WriterEntityFactory::createCell($v);
+                        },
+                        $row
+                    )
+                )
+            );
+        }
+        // close file
+        $writer->close();
+    },
+    $hash
+);
+echo '<p>Download: <a href="' . $asset['url'] . '">' . $asset['filename'] . '</a></p>';
+
 // print table header
 echo "<table><tr>";
 foreach ($columns as $c) {
     echo "<th>{$c['title']}</th>";
 }
 echo "</tr>";
-
-// print results
-$search->order($r['s']);
-foreach ($search->execute() as $signup) {
+// print table
+foreach ($results as $row) {
     echo "<tr>";
-    foreach ($columns as $c) {
+    foreach ($row as $value) {
         echo "<td>";
-        $value = '';
-        if (substr($c['src'], -2) == '()') {
-            $m = substr($c['src'], 0, strlen($c['src']) - 2);
-            if (method_exists($signup, $m)) {
-                $value = call_user_func([$signup, $m]);
-            } else {
-                'function ' . $m . ' not found';
-            }
+        if (is_array($value)) {
+            echo $value[0];
         } else {
-            $value = $signup[$c['src']];
+            echo $value;
         }
-        if ($fn = $c['fmt']) {
-            $value = $fn($value, $signup, $cms);
-        }
-        echo $value;
         echo "</td>";
     }
     echo "</tr>";
@@ -159,6 +234,16 @@ echo "</table>";
 function format_cell_date($value, Signup $signup, CMS $cms): string
 {
     return $cms->helper('strings')->dateHTML($value);
+}
+
+function format_cell_link($value, Signup $signup, CMS $cms): array
+{
+    return [$signup->link(), $signup->url()->__toString()];
+}
+
+function format_cell_uniqid($value, Signup $signup, CMS $cms): array
+{
+    return [$signup->link($signup['dso.id']), $signup['dso.id']];
 }
 
 function signupIDs(array $events, array $windows, CMS $cms): array
