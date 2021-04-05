@@ -9,7 +9,7 @@ use Digraph\Modules\ous_event_management\Signup;
 use Digraph\Modules\ous_event_management\SignupWindow;
 
 $package['response.ttl'] = 3600;
-$package->cache_noStore();
+// $package->cache_noStore();
 
 // load up preset
 if ($package['url.args.preset']) {
