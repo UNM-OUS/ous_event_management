@@ -42,7 +42,7 @@ abstract class AbstractContactInfo extends AbstractChunk
 
     public function instructions(): ?string
     {
-        return '<div class="digraph-card">You can change how your name will appear on your reader card for ceremonies, or on personalized graduate pages, but in printed or online programs your name from Banner will be used.</div>';
+        return '';
     }
 
     public function name()
