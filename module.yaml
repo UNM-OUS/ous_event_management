@@ -106,7 +106,6 @@ permissions:
     '*/event-signup': [deny all]
     '*/event-signupwindow': [deny all]
     '*/event-userlist': [deny all]
-    '*/event-billing-index': [deny all]
     # only admin can add event groups
     'page/event-group': [deny all, allow group admin]
     # disallow adding anything under leaf types
@@ -118,11 +117,6 @@ permissions:
     'event-group/event-signupwindow': [allow group editor]
     # only admin can add userlists
     'event-signupwindow/event-userlist': [allow group admin]
-    # allow billing indexes under various event nouns
-    'event-group/event-billing-index': [allow group editor]
-    'event/event-billing-index': [allow group editor]
-    'event-signup/event-billing-index': [allow group editor]
-    'event-signupwindow/event-billing-index': [allow group editor]
 
 actions:
   proper:
