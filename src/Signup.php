@@ -3,7 +3,6 @@ namespace Digraph\Modules\ous_event_management;
 
 use Digraph\DSO\Noun;
 use Digraph\Modules\ous_event_management\Chunks\Contact\AbstractContactInfo;
-use Digraph\Modules\ous_event_management\Chunks\Degrees\AbstractDegrees;
 use Digraph\Modules\ous_event_management\Chunks\Pages\AbstractPersonalizedPage;
 
 class Signup extends Noun
@@ -16,6 +15,11 @@ class Signup extends Noun
     protected $signupWindow;
     protected $allEvents;
     protected $chunks;
+
+    public function parent()
+    {
+        return $this->signupWindow() ?? parent::parent();
+    }
 
     public function helper(): EventHelper
     {
