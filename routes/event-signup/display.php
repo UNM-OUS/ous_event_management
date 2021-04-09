@@ -19,8 +19,13 @@ echo '</div></div>';
 $events = $signup->allEvents();
 $windowEvents = $signup->signupWindow() ? $signup->signupWindow()->allEvents() : [];
 if ($events || $windowEvents) {
-    echo "<div class='signup-chunk editing'>";
-    echo "<div class='signup-chunk-label'>Events</div>";
+    echo "<div class='signup-chunk'>";
+    // label and edit button
+    echo "<div class='signup-chunk-label'>";
+    if ($signup->allowUpdate() && (count($windowEvents) > 1 || count($events) == 0)) {
+        echo "<a href='" . $signup->url('event-selection') . "' class='mode-switch'>change event selections</a>";
+    }
+    echo "Events</div>";
     // verify events
     foreach ($events as $e) {
         $error = false;
@@ -41,12 +46,8 @@ if ($events || $windowEvents) {
         if ($event['cancelled']) {
             echo '<p class="notification notification-warning"><strong>' . $event->link() . '</strong><br>CANCELLED</p>';
         } else {
-            echo '<p><strong>' . $event->name() . '</strong><div class="incidental">' . $event->metaCell() . '</div></p>';
+            echo '<div class="digraph-block"><strong>' . $event->name() . '</strong><div class="incidental">' . $event->metaCell() . '</div></div>';
         }
-    }
-    // display button to change event selections
-    if ($signup->allowUpdate() && (count($windowEvents) > 1 || count($events) == 0)) {
-        echo "<a href='" . $signup->url('event-selection') . "'>Change event selections</a>";
     }
     echo "</div>";
 }
