@@ -23,8 +23,6 @@ if ($package['url.args.preset']) {
         $cms->helper('notifications')->printError('No report settings');
         return;
     }
-    // verify hash since report settings can execute arbitrary SQL
-    $package->requireUrlHash();
 }
 
 // set up parent
@@ -33,7 +31,6 @@ if ($package['url.args.parent'] && $parent = $cms->read($package['url.args.paren
 } else {
     $parent = $cms->helper('urls')->parse('_event-management/reportbuilder');
     $parent->setData($r);
-    $cms->helper('urls')->hash($parent);
     $package->overrideParent($parent);
 }
 

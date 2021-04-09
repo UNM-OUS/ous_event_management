@@ -42,7 +42,6 @@ $form['noun']->limitTypes(['convocation', 'event', 'event-signupwindow']);
  */
 // pull settings from args
 if ($r = $package->url()->getData()) {
-    $package->requireUrlHash();
     $form['filter']->default($r['f']);
     $form['title']->default($r['t']);
     $form['sort']->default($r['s']);
@@ -79,7 +78,6 @@ if ($form->handle()) {
             's' => $form['sort']->value(),
             'c' => $form['columns']->value(),
         ]);
-        $cms->helper('urls')->hash($url);
     }
     // redirect to generated URL
     $package->redirect($url);

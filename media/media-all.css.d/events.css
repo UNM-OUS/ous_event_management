@@ -89,11 +89,11 @@
     }
 
     &.complete {
-        border-color: $(color_confirmation);
+        // border-color: $(color_confirmation);
 
         .signup-chunk-label {
             color: #fff;
-            background: $(color_confirmation);
+            // background: $(color_confirmation);
         }
     }
 
@@ -103,6 +103,11 @@
         .signup-chunk-label {
             color: #fff;
             background: $(color_warning);
+            &:before {
+                display: 'inline';
+                content: 'INCOMPLETE: ';
+                font-weight: bold;
+            }
         }
     }
 
