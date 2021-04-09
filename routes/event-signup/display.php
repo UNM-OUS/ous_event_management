@@ -23,7 +23,7 @@ if ($events || $windowEvents) {
     // label and edit button
     echo "<div class='signup-chunk-label'>";
     if ($signup->allowUpdate() && (count($windowEvents) > 1 || count($events) == 0)) {
-        echo "<a href='" . $signup->url('event-selection') . "' class='mode-switch'>change event selections</a>";
+        echo "<a href='" . $signup->url('event-selection') . "' class='mode-switch-not-chunk'>change event selections</a>";
     }
     echo "Events</div>";
     // verify events
