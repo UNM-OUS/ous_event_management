@@ -40,7 +40,9 @@ if ($id = $package['url.args.dso_id']) {
 
 // locate a page to moderate
 $search = $cms->factory()->search();
+$time = time()-86400*90;
 $where = [
+    '${dso.modified.date} > '.$time,
     '${dso.type} = "event-signup"',
     '${personalpage.activate} is not null',
     '${complete.state} = "complete"'

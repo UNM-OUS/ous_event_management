@@ -46,6 +46,9 @@ factory_columns:
     moderation__state:
       type: VARCHAR(10)
       index: BTREE
+    personalpage__activate:
+      type: VARCHAR(10)
+      index: BTREE
 
 events:
   email:
