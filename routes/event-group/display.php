@@ -9,11 +9,6 @@ $noun = $package->noun();
 $s = $cms->helper('strings');
 
 /**
- * Event body
- */
-echo $noun->body();
-
-/**
  * List primary events
  */
 $events = $noun->primaryEvents();
@@ -49,6 +44,11 @@ if ($windows = $noun->currentSignupWindows()) {
     }
     echo "</div>";
 }
+
+/**
+ * Event body
+ */
+echo $noun->body();
 
 /** display secondary events */
 if ($noun->secondaryEvents()) {
