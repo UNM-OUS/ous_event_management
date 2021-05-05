@@ -85,6 +85,8 @@ class Signup extends Noun
                 // any emails
             }
         }
+        // set digraph.name so that signups can be searched in Noun fields
+        $this['digraph.name'] = $this->name();
     }
 
     public function personalizedPage(): ?AbstractPersonalizedPage
@@ -304,9 +306,9 @@ class Signup extends Noun
     public function name($verb = null)
     {
         if ($this->contactInfo() && $this->contactInfo()->name()) {
-            return 'Signup for ' . $this->contactInfo()->name();
+            return $this->contactInfo()->name();
         }
-        return 'Signup';
+        return $this['signup.for'];
     }
 
     public function title($verb = null)
