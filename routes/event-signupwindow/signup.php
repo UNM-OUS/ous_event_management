@@ -1,4 +1,5 @@
 <?php
+
 use Digraph\Modules\ous_digraph_module\Fields\EmailOrNetID;
 
 $package->cache_noStore();
@@ -52,18 +53,26 @@ if (!$form['for'] || $form->handle()) {
         $cms->helper('notifications')->flashNotice('An existing signup was found for this user, please see below');
         $package->redirect($signup->url());
         return;
-    } else {
-        // create a new signup
-        $signup = $noun->createSignup($signupFor);
-        $events = $noun->eventGroup()->allEvents();
-        if (count($events) < 2) {
-            // automatically add events if there are less than two events
-            // in this case we bypass the event selection page
-            $signup->setEvents($events);
-            $signup->insert();
-            $package->redirect($signup->url());
-            return;
+    }
+    // create a new signup
+    $signup = $noun->createSignup($signupFor);
+    $events = $noun->eventGroup()->allEvents();
+    // automatically add events if there are less than two events
+    // in this case we bypass the event selection page
+    if (count($events) < 2) {
+        $signup->setEvents($events);
+        $signup->insert();
+        $package->redirect($signup->url());
+        return;
+    }
+    // if skipping event selection is requested
+    if ($package['url.args.skip-event-selection']) {
+        $signup->insert();
+        $package->redirect($signup->url());
+        if ($package['url.args.from'] && $from = $cms->read($package['url.args.from'], false)) {
+            $signup->setEvents([$from]);
         }
+        return;
     }
     // redirect to event selection page and return
     $signup->insert();

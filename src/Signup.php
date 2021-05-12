@@ -1,4 +1,5 @@
 <?php
+
 namespace Digraph\Modules\ous_event_management;
 
 use Digraph\DSO\Noun;
@@ -132,7 +133,7 @@ class Signup extends Noun
             return true;
         }
         // signup window is open
-        if (time() > $this->signupWindow()['signupwindow.time.start'] && time() < $this->signupWindow()['signupwindow.time.end']) {
+        if ($this->signupWindow()->isOpen() || $this->cms()->helper('permissions')->check('form/ignoredeadlines', 'events')) {
             // allow if signup belongs to user
             if ($this->isMine()) {
                 return true;
