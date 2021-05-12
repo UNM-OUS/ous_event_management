@@ -7,7 +7,7 @@ $f = $cms->helper('forms');
 $u = $cms->helper('users');
 
 /**
- * check token
+ * check permissions
  */
 if (!$noun->signupAllowed()) {
     $url = $noun->url();
@@ -45,7 +45,7 @@ if (!$canSignupOthers) {
  * 'for' and 'events' fields both don't exist, indicating that no
  * options were available.
  */
-if ($form->handle() || !$form['for']) {
+if (!$form['for'] || $form->handle()) {
     if ($signup = $noun->findSignupFor($signupFor)) {
         // signup found for this user
         // in this case we bypass the event selection page

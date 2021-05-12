@@ -14,18 +14,18 @@ if (!$signup->allowViewing()) {
 }
 
 if ($signup->complete()) {
-    $status=[
+    $status = [
         'type' => 'confirmation',
         'message' => 'This signup is complete'
     ];
-}else {
+} else {
     if ($signup->allowUpdate()) {
-        $status=[
+        $status = [
             'type' => 'warning',
             'message' => 'This signup is currently incomplete. Please complete all the sections below.'
         ];
-    }else {
-        $status=[
+    } else {
+        $status = [
             'type' => 'error',
             'message' => 'This signup is incomplete'
         ];
