@@ -1,4 +1,5 @@
 <?php
+
 namespace Digraph\Modules\ous_event_management;
 
 use Digraph\DSO\Noun;
@@ -114,14 +115,15 @@ class SignupWindow extends Noun
         if ($p->checkUrl($this->url('edit'))) {
             // user can edit window, so signups are unrestricted
             return true;
-        } elseif ($this->isOpen()) {
-            // signup window is open
+        } elseif ($this->isOpen() || $p->check('form/ignoredeadlines', 'events')) {
+            // signup window is open or user has form/ignoredeadlines permission
             // return false if user isn't allowed to view signup URL
             if (!$p->checkUrl($this->url('signup'))) {
                 return false;
             }
             // check if user is disallowed to sign up via UserLists
-            if ($this['signupwindow.limit_signups']) {
+            // only runs if user isn't allowed to sign up others
+            if ($this['signupwindow.limit_signups'] && !$this->canSignupOthers()) {
                 // signups are limited, only return true if userlist user is found
                 return !!$this->firstUserListUser();
             } else {
