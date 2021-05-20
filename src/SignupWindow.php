@@ -147,11 +147,11 @@ class SignupWindow extends Noun
         if ($cache->hasItem($cacheID)) {
             return $cache->getItem($cacheID)->get();
         }
-        // find result
+        // find results
         $results = [];
         foreach ($this->userLists() as $list) {
-            if ($users = $list->findAll($query)) {
-                $results = $results + $users;
+            foreach ($list->findAll($query) as $user) {
+                $results[] = $user;
             }
         }
         // cache and return result
