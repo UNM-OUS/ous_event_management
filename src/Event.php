@@ -4,6 +4,7 @@ namespace Digraph\Modules\ous_event_management;
 use Digraph\DSO\Noun;
 use Digraph\Urls\Url;
 use Formward\Fields\Input;
+use Formward\Fields\Url as UrlField;
 
 /**
  * This is the primary event type, and objects of this type will be given
@@ -46,7 +47,7 @@ class Event extends Noun
         if ($this->signupWindows === null) {
             $this->signupWindows = [];
             //add event group signup windows with same grouping
-            if ($this->eventGroup()) {
+            if (!$this['signup_disable'] && $this->eventGroup()) {
                 foreach ($this->eventGroup()->signupWindows() as $window) {
                     if ($window['signup_grouping'] == $this['signup_grouping']) {
                         $this->signupWindows[] = $window;
@@ -205,6 +206,15 @@ class Event extends Noun
                 ['event.form.preset'],
                 $this->cms()->helper('permissions')->check('form/newpreset', 'events'),
             ],
+        ];
+        $map['override_url'] = [
+            'label' => 'Override URL',
+            'field' => 'override_url',
+            'class' => UrlField::class,
+            'tips' => [
+                'Use this field to make the convocation page on our site redirect to another page of your choosing, such as if you already have an information page on your own website.',
+            ],
+            'weight' => 500,
         ];
         if (in_array('editor', $this->cms()->helper('users')->groups())) {
             $map['signup_grouping'] = [
