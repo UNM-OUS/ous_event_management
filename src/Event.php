@@ -47,7 +47,7 @@ class Event extends Noun
         if ($this->signupWindows === null) {
             $this->signupWindows = [];
             //add event group signup windows with same grouping
-            if (!$this['signup_disable'] && $this->eventGroup()) {
+            if ($this->eventGroup()) {
                 foreach ($this->eventGroup()->signupWindows() as $window) {
                     if ($window['signup_grouping'] == $this['signup_grouping']) {
                         $this->signupWindows[] = $window;
@@ -128,7 +128,7 @@ class Event extends Noun
      */
     public function signupsAllowed(): bool
     {
-        if ($this['disablesignups'] || $this['cancelled']) {
+        if ($this['signup_disable'] || $this['cancelled']) {
             return false;
         }
         return true;

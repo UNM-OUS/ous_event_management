@@ -1,4 +1,5 @@
 <?php
+
 use Formward\Fields\CheckboxList;
 
 $package->cache_noStore();
@@ -41,7 +42,9 @@ if ($signup->signupWindow()->primaryEvents()) {
     $options = [];
     $default = [$package['url.args.from']];
     foreach ($signup->signupWindow()->primaryEvents(true) as $e) {
-        $options[$e['dso.id']] = '<strong>' . $e->name() . '</strong><div class="incidental">' . $e->metaCell() . '</div>';
+        if ($e->signupsAllowed()) {
+            $options[$e['dso.id']] = '<strong>' . $e->name() . '</strong><div class="incidental">' . $e->metaCell() . '</div>';
+        }
     }
     foreach ($signup->primaryEvents() as $e) {
         $default[] = $e['dso.id'];
@@ -59,7 +62,9 @@ if ($signup->signupWindow()->secondaryEvents()) {
     $options = [];
     $default = [$package['url.args.from']];
     foreach ($signup->signupWindow()->secondaryEvents() as $e) {
-        $options[$e['dso.id']] = '<strong>' . $e->name() . '</strong><div class="incidental">' . $e->metaCell() . '</div>';
+        if ($e->signupsAllowed()) {
+            $options[$e['dso.id']] = '<strong>' . $e->name() . '</strong><div class="incidental">' . $e->metaCell() . '</div>';
+        }
     }
     foreach ($signup->secondaryEvents() as $e) {
         $default[] = $e['dso.id'];
