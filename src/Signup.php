@@ -17,6 +17,27 @@ class Signup extends Noun
     protected $allEvents;
     protected $chunks;
 
+    public function attended(string $eventID, bool $set = null): ?bool
+    {
+        /** @var \Digraph\Graph\EdgeHelper */
+        $e = $this->cms()->helper('edges');
+        if ($set !== null) {
+            $e->create(
+                $eventID,
+                $this['dso.id'],
+                $set ? 'event-signup-attended-true' : 'event-signup-attended-false',
+                -1
+            );
+        }
+        if ($e->get($eventID, $this['dso.id'], 'event-signup-attended-true')) {
+            return true;
+        } elseif ($e->get($eventID, $this['dso.id'], 'event-signup-attended-false')) {
+            return false;
+        } else {
+            return null;
+        }
+    }
+
     public function parent()
     {
         return $this->signupWindow() ?? parent::parent();

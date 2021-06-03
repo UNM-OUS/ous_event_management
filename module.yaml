@@ -6,6 +6,8 @@ types:
     event-signupwindow:  ${module.namespace}\SignupWindow
     event-userlist: ${module.namespace}\UserList
     event-bouncer: Digraph\DSO\Noun
+    event-ticket-group: ${module.namespace}\Tickets\TicketGroup
+    event-ticket: ${module.namespace}\Tickets\ManualTicket
 
 image-transform:
   driver: 
@@ -85,6 +87,7 @@ permissions:
     event/edit: [allow group editor]
     event/delete: [allow group editor]
     event/reports: [allow group editor]
+    event/attendance: [allow group editor]
     # event-signupwindow
     event-signupwindow/signup: [allow group user]
     event-signupwindow/userlists: [allow group editor]
@@ -103,6 +106,12 @@ permissions:
     # event-userlist
     event-userlist/display: [deny all, allow group editor]
     event-userlist/edit: [deny all, allow group admin]
+    # ticketing
+    'event-ticket-group/display': [deny all, allow group user]
+    'event-ticket-group/ticket': [allow all]
+    'event-ticket-group/link-signups': [allow group editor]
+    'event-ticket-group/send-emails': [allow group editor]
+    'event/ticket-groups': [allow group editor]
   add:
     # disallow adding event types
     '*/event': [deny all]
@@ -120,6 +129,12 @@ permissions:
     'event-group/event-signupwindow': [allow group editor]
     # only admin can add userlists
     'event-signupwindow/event-userlist': [allow group admin]
+    # ticketing
+    'event-ticket-group/*': [deny all]
+    '*/event-ticket-group': [deny all]
+    'event/event-ticket-group': [allow group admin]
+    '*/event-ticket': [deny all]
+    'event-ticket-group/event-ticket': [allow group editor]
 
 actions:
   proper:
@@ -130,6 +145,10 @@ actions:
       reports: '!id/reports'
     event:
       reports: '!id/reports'
+      ticket-groups: '!id/ticket-groups'
+      attendance: '!id/attendance'
+    event-ticket-group:
+      send-emails: '!id/send-emails'
   common:
     _user/signedin:
       eventmanagement: '_event-management/display'

@@ -1,0 +1,60 @@
+.event-ticket {
+    font-size: 12pt;
+    line-height: 1.4;
+
+    .ticket-meta {
+        background: #fff;
+        padding: 1em;
+        border: 1px dotted #999;
+        font-family: monospace;
+        font-size: 10pt;
+        margin-bottom: 1em;
+    }
+
+    .ticket-qr {
+
+        img,
+        svg {
+            width: 100%;
+            height: auto;
+        }
+    }
+}
+
+.ticket-top,
+.ticket-bottom {
+    padding: 1em 0;
+    max-width: 8in;
+    min-height: 4.125in;
+    margin: 0 auto;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.ticket-top {
+    border-bottom: 1px dashed #000;
+}
+
+.reader-card {
+    .name {
+        font-size: 2em;
+        font-weight: bold;
+    }
+
+    .pronunciation {
+        font-weight: lighter;
+        font-size: 1.5em;
+        color: #999;
+    }
+
+    .program {
+        font-weight: bold;
+    }
+
+    .meta {
+        color: #999;
+        position: absolute;
+        bottom: 1em;
+        left: 1em;
+    }
+}

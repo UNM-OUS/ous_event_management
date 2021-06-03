@@ -25,6 +25,11 @@ class Event extends Noun
         return $this->cms()->helper('graph')->children($this['dso.id'], 'event-event-signup');
     }
 
+    public function allSignupIDs(): array
+    {
+        return $this->cms()->helper('graph')->childIDs($this['dso.id'], 'event-event-signup');
+    }
+
     /**
      * Used to allow events to be placed into categories on event-list pages.
      * Returns null to be in the default/no category, at the top.

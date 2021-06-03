@@ -1,0 +1,24 @@
+<style>
+{{group.css()|raw}}
+</style>
+<div class='event-ticket event-ticket-group-{{group.dso.id}}{% if ticket_no_content %} no-content{% endif %}'>
+    <div class="ticket-top">
+        <div class="ticket-meta">
+            <div class='ticket-qr'>{{ticket_qr|raw}}</div>
+            <div class='ticket-id'>{{ticket_id}}</div>
+            <div class='group-name'>{{group.name}}</div>
+            <div>
+                <p>{{signup.name}}</p>
+                <p>{{parent.name}}</p>
+            </div>
+        </div>
+        {% if not ticket_no_content %}
+        <div class="ticket-content">
+            {{ticket_content|raw}}
+        </div>
+        {% endif %}
+    </div>
+    <div class="ticket-bottom">
+        {{ticket_instructions|raw}}
+    </div>
+</div>

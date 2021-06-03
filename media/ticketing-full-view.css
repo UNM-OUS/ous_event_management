@@ -1,0 +1,64 @@
+.event-ticket {
+    font-size: 12pt;
+    line-height: 1.4;
+
+    .ticket-meta {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 1em;
+        width: 25%;
+        box-sizing: border-box;
+    }
+
+    .ticket-content {
+        width: 75%;
+    }
+
+    .ticket-top,
+    .ticket-bottom {
+        padding: 1em;
+        min-height: 4.125in;
+    }
+
+    .ticket-bottom {
+        columns: 2;
+    }
+
+    .reader-card {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 75%;
+        box-sizing: border-box;
+        padding: 1em;
+
+        .pronunciation {
+            &:after {
+                content: '\00a0';
+                display: inline;
+                overflow: hidden;
+                width: 1px;
+            }
+        }
+    }
+
+    &.no-content {
+        .ticket-top {
+            display: flex;
+            align-items: center;
+            padding: 0;
+
+            .ticket-meta {
+                position: relative;
+                width: 100%;
+                max-width: 2in;
+                top: auto;
+                left: auto;
+                bottom: auto;
+                margin: 0 auto;
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
+<div class='reader-card'>
+    <div class='main'>
+        <div class='name'>{{signup.contactInfo.name}}</div>
+        <div class='pronunciation'>{{signup.contact.pronunciation}}</div>
+        {% if signup.degreeCategory == 'Doctoral/Terminal' %}
+            <div class='program'>{{signup.degree.degree_val.program}}</div>
+        {% endif %}
+    </div>
+    <div class='meta'>
+        <div class='level'>{{signup.degreeCategory}}</div>
+        <div class='school'>{{signup.degree.degree_val.college}}</div>
+        <div class='email'>{{signup.contact.email}}</div>
+    </div>
+</div>

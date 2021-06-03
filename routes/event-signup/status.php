@@ -14,9 +14,27 @@ if (!$signup->allowViewing()) {
 }
 
 if ($signup->complete()) {
+    $message = '<strong>This signup is complete</strong>';
+    // locate tickets
+    $tickets = [];
+    /** @var \Digraph\Graph\GraphHelper */
+    $graph = $cms->helper('graph');
+    foreach ($signup->allEvents() as $event) {
+        foreach ($graph->children($event['dso.id'], 'event-ticket-group') as $ticketGroup) {
+            /** @var \Digraph\Modules\event_attendance\TicketGroup */
+            // $ticketGroup = $ticketGroup;
+            if (in_array($signup['dso.id'], $ticketGroup->signupIDs())) {
+                $tickets[] = $ticketGroup->link($ticketGroup->name(), 'ticket', ['s' => $signup['dso.id']]);
+            }
+        }
+    }
+    if ($tickets) {
+        $message .= '<br><br>Print-at-home tickets/passes:<br>'
+            . implode('<br>', $tickets);
+    }
     $status = [
         'type' => 'confirmation',
-        'message' => 'This signup is complete'
+        'message' => $message
     ];
 } else {
     if ($signup->allowUpdate()) {
