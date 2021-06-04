@@ -22,6 +22,8 @@ class Signup extends Noun
         /** @var \Digraph\Graph\EdgeHelper */
         $e = $this->cms()->helper('edges');
         if ($set !== null) {
+            $e->delete($eventID, $this['dso.id'], 'event-signup-attended-true');
+            $e->delete($eventID, $this['dso.id'], 'event-signup-attended-false');
             $e->create(
                 $eventID,
                 $this['dso.id'],
