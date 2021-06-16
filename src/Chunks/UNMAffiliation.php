@@ -117,21 +117,21 @@ class UNMAffiliation extends AbstractChunk
                 'required' => false,
                 'weight' => 100,
             ],
-            'msc' => [
-                'label' => 'Mail stop code (if applicable)',
-                'class' => FieldValueAutocomplete::class,
-                'field' => "$name.msc",
-                'extraConstructArgs' => [
-                    $types, //types
-                    ["$name.msc"], //fields
-                    true, //allow adding
-                ],
-                'tips' => [
-                    'If you don\'t know your Mail Stop Code, you can <a href="https://directory.unm.edu/" target="_blank">look it up in the directory</a>'
-                ],
-                'required' => false,
-                'weight' => 100,
-            ],
+            // 'msc' => [
+            //     'label' => 'Mail stop code (if applicable)',
+            //     'class' => FieldValueAutocomplete::class,
+            //     'field' => "$name.msc",
+            //     'extraConstructArgs' => [
+            //         $types, //types
+            //         ["$name.msc"], //fields
+            //         true, //allow adding
+            //     ],
+            //     'tips' => [
+            //         'If you don\'t know your Mail Stop Code, you can <a href="https://directory.unm.edu/" target="_blank">look it up in the directory</a>'
+            //     ],
+            //     'required' => false,
+            //     'weight' => 100,
+            // ],
         ];
     }
 }
