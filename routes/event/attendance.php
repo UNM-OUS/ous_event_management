@@ -22,6 +22,10 @@ foreach ($search->execute() as $signup) {
         'true' => 'Attended',
         'false' => 'Did not attend'
     ]);
+    $default = $signup->attended($event['dso.id']);
+    if ($default !== null) {
+        $form[$signup['dso.id']]->default($default ? 'true' : 'false');
+    }
 }
 
 echo $form;
