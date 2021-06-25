@@ -1,4 +1,5 @@
 <?php
+
 namespace Digraph\Modules\ous_event_management\Chunks\jSignature;
 
 use Digraph\Modules\ous_event_management\Chunks\AbstractChunk;
@@ -14,8 +15,7 @@ class Waiver extends AbstractChunk
             '<div class="digraph-card incidental">' .
             '<p>Please be advised that, in connection with the production and publication of The University of New Mexico institutional promotional material, filming/taping and photographic recording will take place at live events such as, but not limited to, commencement ceremonies. Similarly, if any such event is conducted virtually, online, or by otherwise utilizing a digital platform, all video, photographic, or audio recordings can be recorded and used as described herein.</p>' .
             '<p>The information provided in this form may be used in connection with any recorded video, audio, or photographic documentation taken during the event or in promotion for the event or University. People in public areas near the event may appear in pictures and/or videos. Please be aware that by signing up for the event or entering the area, you grant The University of New Mexico and its designees the irrevocable right to use your voice, image, name and likeness, without compensation, in all manners in connection with the picture, including composite or modified representations, for advertising, trade or any other lawful purposes, and you release The University of New Mexico and its designees from all liability in connection therein.</p>' .
-            '</div>'
-        ;
+            '</div>';
     }
 
     public function body_edit()
@@ -36,11 +36,19 @@ class Waiver extends AbstractChunk
             echo $svg->NativeToSVG($signature);
             echo '</div>';
         } else {
-            echo '<div class="jsignature-text-signature">' . htmlspecialchars($this->signup[$this->name . '.signature']) . '</div>';
+            if (!preg_match('/^OTHER: /', $this->signup[$this->name . '.signature'])) {
+                echo '<div class="jsignature-text-signature">' . htmlspecialchars($this->signup[$this->name . '.signature']) . '</div>';
+            } else {
+                echo $this->instructions();
+            }
         }
         echo "<div class='incidental'>";
-        echo "first signed ".$this->signup[$this->name . '.chunk.created.time'];
+        echo "first signed " . $this->signup[$this->name . '.chunk.created.time'];
         echo " by " . preg_replace('/@netid$/', '', $this->signup[$this->name . '.chunk.created.user']);
+        if ($this->signup[$this->name . '.chunk.created.user'] != $this->signup[$this->name . '.chunk.modified.user']) {
+            echo "<br><br>last signed " . $this->signup[$this->name . '.chunk.modified.time'];
+            echo " by " . preg_replace('/@netid$/', '', $this->signup[$this->name . '.chunk.modified.user']);
+        }
         echo "</div>";
     }
 
@@ -59,24 +67,49 @@ class Waiver extends AbstractChunk
 
     protected function form_map(): array
     {
-        return [
-            'checkbox' => [
-                'label' => 'I have read and agree to the above',
-                'field' => $this->name . '.checkbox',
-                'class' => 'checkbox',
-                'weight' => 500,
-                'required' => true,
-            ],
-            'signature' => [
-                'label' => 'Signature',
-                'field' => $this->name . '.signature',
-                'class' => 'text',
-                'weight' => 510,
-                'required' => true,
-                'call' => [
-                    'addClass' => ['jSignature'],
+        $netid = $this->signup->cms()->helper('users')->user()->identifier();
+        if ($this->signup['signup.for'] != $netid) {
+            return [
+                'checkbox' => [
+                    'label' => 'Filled out by ' . $netid,
+                    'field' => $this->name . '.checkbox',
+                    'class' => 'checkbox',
+                    'weight' => 500,
+                    'required' => true,
                 ],
-            ],
-        ];
+                'signature' => [
+                    'label' => 'Signature',
+                    'field' => $this->name . '.signature',
+                    'class' => 'text',
+                    'weight' => 510,
+                    'required' => true,
+                    'call' => [
+                        'addClass' => ['hidden'],
+                        'value' => ['OTHER: ' . $netid]
+                    ],
+                ],
+            ];
+        } else {
+            // regular people signature field
+            return [
+                'checkbox' => [
+                    'label' => 'I have read and agree to the above',
+                    'field' => $this->name . '.checkbox',
+                    'class' => 'checkbox',
+                    'weight' => 500,
+                    'required' => true,
+                ],
+                'signature' => [
+                    'label' => 'Signature',
+                    'field' => $this->name . '.signature',
+                    'class' => 'text',
+                    'weight' => 510,
+                    'required' => true,
+                    'call' => [
+                        'addClass' => ['jSignature'],
+                    ],
+                ],
+            ];
+        }
     }
 }
