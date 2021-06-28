@@ -53,19 +53,51 @@ class Signup extends Noun
     public function notificationEmails(): array
     {
         $to = [];
+        // use email address from entered contact info
         if ($this->contactInfo()) {
             $to[] = $this->contactinfo()->email();
         }
+        // use email address from user lists
         if ($user = $this->firstUserListUser()) {
             $to[] = $user['email'];
         }
+        // signup.for is who this signup is "for"
         $for = $this['signup.for'];
         if (strpos($for, '@') === false) {
             $to[] = $for . '@unm.edu';
         } else {
             $to[] = $for;
         }
+        // return filtered/unique
         $to = array_filter(array_unique($to));
+        $to = array_filter(
+            $to,
+            function ($email) {
+                return filter_var($email, FILTER_VALIDATE_EMAIL);
+            }
+        );
+        return $to;
+    }
+
+    public function notificationBCCs(): array
+    {
+        $to = [];
+        //set debug bcc
+        foreach ($this->cms()->config['events.email.debug_bcc'] as $bcc) {
+            $to[] = $bcc;
+        }
+        // add digraph creator/modifier
+        $to[] = preg_replace('/@netid$/', '@unm.edu', $this['dso.created.user.id']);
+        $to[] = preg_replace('/@netid$/', '@unm.edu', $this['dso.modified.user.id']);
+        // return filtered/unique, remove anyone who is already in the to field
+        $tos = $this->notificationEmails();
+        $to = array_filter(array_unique($to));
+        $to = array_filter(
+            $to,
+            function ($email) use ($tos) {
+                return filter_var($email, FILTER_VALIDATE_EMAIL) && !in_array($email, $tos);
+            }
+        );
         return $to;
     }
 

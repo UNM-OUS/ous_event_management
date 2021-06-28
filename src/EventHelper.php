@@ -1,4 +1,5 @@
 <?php
+
 namespace Digraph\Modules\ous_event_management;
 
 use Digraph\Data\DatastoreNamespace;
@@ -88,10 +89,13 @@ class EventHelper extends AbstractHelper
         $message->addTag('events');
         //set subject
         $message->setSubject($subject);
-        //set to address (either address directly, or submitter from Proposal)
+        //set to/bcc addresses and tags
         if ($to_or_signup instanceof Signup) {
             foreach ($to_or_signup->notificationEmails() as $to) {
                 $message->addTo($to);
+            }
+            foreach ($to_or_signup->notificationBCCs() as $to) {
+                $message->addBCC($to);
             }
             $message->addTag($to_or_signup['dso.id']);
             if ($window = $to_or_signup->signupWindow()) {
@@ -108,12 +112,8 @@ class EventHelper extends AbstractHelper
         }
         //set body
         $message->setBody($body_html);
-        //set from/ccs/bccs
+        //set from
         $message->setFrom($this->cms->config['events.email.from']);
-        //set debug bcc
-        foreach ($this->cms->config['events.email.debug_bcc'] as $bcc) {
-            $message->addBCC($bcc);
-        }
         //attempt to send and return result
         $this->cms->helper('mail')->send($message);
         return true;
