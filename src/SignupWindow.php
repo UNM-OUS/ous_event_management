@@ -13,6 +13,11 @@ class SignupWindow extends Noun
     protected $userLists;
     protected $allEvents;
 
+    public function signupGrouping(): array
+    {
+        return preg_split('/ *, */', $this['signup_grouping']);
+    }
+
     public function chunks(): array
     {
         if ($p = $this['signupwindow.form.preset']) {
@@ -43,8 +48,11 @@ class SignupWindow extends Noun
         if ($this->allEvents === null) {
             $this->allEvents = array_filter(
                 $this->eventGroup()->allEvents(true),
-                function ($e) {
-                    return $e['signup_grouping'] == $this['signup_grouping'];
+                function (Event $e) {
+                    if ($e['signup_disabled'] || $e['cancelled']) {
+                        return false;
+                    }
+                    return !!array_intersect($this->signupGrouping(), $e->signupGrouping());
                 }
             );
         }

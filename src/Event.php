@@ -1,4 +1,5 @@
 <?php
+
 namespace Digraph\Modules\ous_event_management;
 
 use Digraph\DSO\Noun;
@@ -19,6 +20,11 @@ class Event extends Noun
     const PRIMARY_EVENT = true;
     protected $eventGroup;
     protected $signupWindows;
+
+    public function signupGrouping(): array
+    {
+        return preg_split('/ *, */', $this['signup_grouping']);
+    }
 
     public function allSignups(): array
     {
@@ -49,12 +55,16 @@ class Event extends Noun
      */
     public function signupWindows(): array
     {
+        // return empty if signups are disabled
+        if ($this['signup_disable'] || $this['cancelled']) {
+            return [];
+        }
         if ($this->signupWindows === null) {
             $this->signupWindows = [];
             //add event group signup windows with same grouping
             if ($this->eventGroup()) {
                 foreach ($this->eventGroup()->signupWindows() as $window) {
-                    if ($window['signup_grouping'] == $this['signup_grouping']) {
+                    if (array_intersect($window->signupGrouping(), $this->signupGrouping())) {
                         $this->signupWindows[] = $window;
                     }
                 }

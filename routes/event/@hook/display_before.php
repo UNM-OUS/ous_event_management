@@ -16,6 +16,11 @@ if ($event['override_url']) {
 }
 
 /**
+ * Display the meta block
+ */
+echo $event->metaBlock();
+
+/**
  * List current signup windows
  */
 $windows = $event->signupWindows();
