@@ -149,12 +149,6 @@ class SignupWindow extends Noun
         if (!$query) {
             $query = $this->cms()->helper('users')->userIdentifier();
         }
-        // try to load from cache
-        $cacheID = md5($this['dso.id'] . '/allUserListUsers/' . $query);
-        $cache = $this->cms()->cache();
-        if ($cache->hasItem($cacheID)) {
-            return $cache->getItem($cacheID)->get();
-        }
         // find results
         $results = [];
         foreach ($this->userLists() as $list) {
@@ -163,10 +157,6 @@ class SignupWindow extends Noun
             }
         }
         // cache and return result
-        $citem = $cache->getItem($cacheID);
-        $citem->set($results);
-        $citem->expiresAfter(3600);
-        $cache->save($citem);
         return $results;
     }
 
@@ -175,25 +165,11 @@ class SignupWindow extends Noun
         if (!$query) {
             $query = $this->cms()->helper('users')->userIdentifier();
         }
-        // try to load from cache
-        $cacheID = md5($this['dso.id'] . '/firstUserListUser/' . $query);
-        $cache = $this->cms()->cache();
-        if ($cache->hasItem($cacheID)) {
-            return $cache->getItem($cacheID)->get();
-        }
-        // find result
-        $result = null;
         foreach ($this->userLists() as $list) {
             if ($user = $list->findFirst($query)) {
-                $result = $user;
+                return $user;
             }
         }
-        // cache and return result
-        $citem = $cache->getItem($cacheID);
-        $citem->set($result);
-        $citem->expiresAfter(3600);
-        $cache->save($citem);
-        return $result;
     }
 
     public function userLists(): array

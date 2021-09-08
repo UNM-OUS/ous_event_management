@@ -1,8 +1,10 @@
 <?php
+
 namespace Digraph\Modules\ous_event_management;
 
-use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Digraph\DSO\Noun;
+use Envms\FluentPDO\Queries\Select;
+use Envms\FluentPDO\Query;
 
 /**
  * This Noun type is used to upload a list of students from MyReports.
@@ -32,6 +34,62 @@ class UserList extends Noun
         'outcomes_count',
     ];
 
+    public function hook_create()
+    {
+        parent::hook_create();
+        $this->createTable();
+    }
+
+    public function hook_update()
+    {
+        parent::hook_update();
+        $this->createTable();
+    }
+
+    public function createTable()
+    {
+        $pdo = $this->cms()->pdo('userlists');
+        $pdo->exec('CREATE TABLE IF NOT EXISTS "user" ("id" INTEGER, "list_id" TEXT NOT NULL, "netid" TEXT, "email" TEXT, "data" TEXT NOT NULL, PRIMARY KEY("id"))');
+        $pdo->exec('CREATE INDEX IF NOT EXISTS "user_email" ON "user" ("email")');
+        $pdo->exec('CREATE INDEX IF NOT EXISTS "user_netid" ON "user" ("netid")');
+        $pdo->exec('CREATE INDEX IF NOT EXISTS "user_list_id" ON "user" ("list_id")');
+    }
+
+    public function query(): Query
+    {
+        $query = new Query($this->cms()->pdo('userlists'));
+        return $query;
+    }
+
+    public function select(): Select
+    {
+        return $this->query()
+            ->from('user')
+            ->where('list_id = ?', [$this['dso.id']]);
+    }
+
+    public function addRow(array $row)
+    {
+        $this->query()
+            ->insertInto(
+                'user',
+                [
+                    'list_id' => $this['dso.id'],
+                    'netid' => @$row['netid'],
+                    'email' => @$row['email'],
+                    'data' => json_encode($row)
+                ]
+            )->execute();
+    }
+
+    public function clearList()
+    {
+        $this->query()
+            ->delete('user')
+            ->where('list_id = ?', [$this['dso.id']])
+            ->execute();
+    }
+
     /**
      * Search for a the first result matching a given email or NetID
      *
@@ -40,12 +98,11 @@ class UserList extends Noun
      */
     public function findFirst(string $query): ?array
     {
-        $query = strtolower($query);
-        $r = $this->filter(function ($row) use ($query) {
-            return strtolower(@$row['netid']) == $query || strtolower(@$row['email']) == $query;
-        }, 1);
-        if ($r) {
-            return array_shift($r);
+        $first = $this->select()
+            ->where('netid = :q OR email = :q', ['q' => $query])
+            ->fetch();
+        if ($first) {
+            return json_decode($first['data'], true);
         } else {
             return null;
         }
@@ -59,10 +116,14 @@ class UserList extends Noun
      */
     function findAll(string $query): array
     {
-        $query = strtolower($query);
-        return $this->filter(function ($row) use ($query) {
-            return strtolower(@$row['netid']) == $query || strtolower(@$row['email']) == $query;
-        });
+        return array_map(
+            function ($e) {
+                return json_decode($e['data'], true);
+            },
+            $this->select()
+                ->where('netid = :q OR email = :q', ['q' => $query])
+                ->fetchAll()
+        );
     }
 
     function map(callable $fn, int $limit = 0): array
@@ -75,35 +136,13 @@ class UserList extends Noun
     function filter(callable $fn, int $limit = 0): array
     {
         $results = [];
-        foreach ($this->userFiles() as $file) {
-            $reader = ReaderEntityFactory::createReaderFromFile($file->name());
-            $reader->open($file->path());
-            $headers = null;
-            foreach ($reader->getSheetIterator() as $sheet) {
-                foreach ($sheet->getRowIterator() as $row) {
-                    $cells = $row->getCells();
-                    if (!$headers) {
-                        $headers = array_flip(array_map(function ($cell) {
-                            return strtolower(trim($cell->getValue()));
-                        }, $cells));
-                    } else {
-                        // row data keyed by headers in first row
-                        $rowData = array_map(function ($i) use ($cells) {return @$cells[$i]->getValue();}, $headers);
-                        // verify that this row is valid
-                        if (!$this->filterRowData($rowData)) {
-                            continue;
-                        }
-                        // preprocess row data
-                        $rowData = $this->preProcessRowData($rowData);
-                        // process with $fn and add to results if $fn returns true
-                        if ($fn($rowData)) {
-                            $results[$this->hashRowData($rowData)] = $rowData;
-                            // check limit, return results if we're done
-                            if ($limit && count($results) >= $limit) {
-                                return array_values($results);
-                            }
-                        }
-                    }
+        $query = $this->select();
+        while ($row = $query->fetch()) {
+            $row = json_decode($row['data'], true);
+            if ($fn($row)) {
+                $results[$this->hashRowData($row)] = $row;
+                if ($limit && count($results) == $limit) {
+                    break;
                 }
             }
         }
@@ -205,39 +244,11 @@ class UserList extends Noun
         return true;
     }
 
-    function userFiles()
-    {
-        return $this->cms()->helper('filestore')->list($this, $this::FILESTORE_PATH);
-    }
-
     function formMap(string $action): array
     {
         $map = parent::formMap($action);
         $map['digraph_title'] = false;
         $map['digraph_body'] = false;
-        $map['userlist_files'] = [
-            'weight' => 250,
-            'label' => 'Spreadsheets',
-            'class' => 'Digraph\\Forms\\Fields\\FileStoreFieldMulti',
-            'required' => true,
-            'extraConstructArgs' => [static::FILESTORE_PATH],
-        ];
-        $map['userlist_minstatus'] = [
-            'weight' => 200,
-            'label' => 'Minimum degree status',
-            'field' => 'userlist.minstatus',
-            'class' => 'select',
-            'required' => true,
-            'default' => 'pending',
-            'call' => [
-                'options' => [[
-                    'none' => 'None',
-                    'sought' => 'Sought',
-                    'pending' => 'Pending',
-                    'awarded' => 'Awarded',
-                ]],
-            ],
-        ];
         return $map;
     }
 
