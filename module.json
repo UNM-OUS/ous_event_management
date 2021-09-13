@@ -1,0 +1,351 @@
+{
+  "types": {
+    "content": {
+      "event-group": "${module.namespace}\\EventGroup",
+      "event": "${module.namespace}\\Event",
+      "event-signup": "${module.namespace}\\Signup",
+      "event-signupwindow": "${module.namespace}\\SignupWindow",
+      "event-userlist": "${module.namespace}\\UserList",
+      "event-bouncer": "Digraph\\DSO\\Noun",
+      "event-ticket-group": "${module.namespace}\\Tickets\\TicketGroup",
+      "event-ticket": "${module.namespace}\\Tickets\\ManualTicket"
+    }
+  },
+  "image-transform": {
+    "driver": {
+      "class": "ByJoby\\ImageTransform\\Drivers\\GDDriver",
+      "arg1": null
+    }
+  },
+  "strings": {
+    "urls": {
+      "proper": {
+        "event-group/secondary-events": "Departmental events",
+        "event-signupwindow/signup": "Begin signup",
+        "event-signupwindow/userlists": "user lists",
+        "event-signup/event-selection": "Event selection",
+        "event-signup/personalpage": "Personalized page"
+      },
+      "common": {
+        "_event-management/display": "Event management",
+        "_event-management/page-moderation": "Personalized page moderation queue",
+        "_event-management/mail-templates": "Email templates",
+        "_event-management/mail-templates-edit": "Add/edit email template",
+        "_event-management/reportbuilder": "Report designer",
+        "_event-management/reports": "Signup reports",
+        "_event-management/report": "Signup report",
+        "_event-management/photos": "Personalized page photos"
+      }
+    },
+    "events": {
+      "notallowed": "<p>You are not on the list of users allowed to use this form.</p>"
+    }
+  },
+  "factory_columns": {
+    "content": {
+      "signup__for": {
+        "type": "VARCHAR(150)",
+        "index": "BTREE"
+      },
+      "signup__owner": {
+        "type": "VARCHAR(150)",
+        "index": "BTREE"
+      },
+      "complete_state": {
+        "type": "VARCHAR(10)",
+        "index": "BTREE"
+      },
+      "moderation__state": {
+        "type": "VARCHAR(10)",
+        "index": "BTREE"
+      },
+      "personalpage__activate": {
+        "type": "VARCHAR(10)",
+        "index": "BTREE"
+      }
+    }
+  },
+  "events": {
+    "email": {
+      "from": "graduation@unm.edu",
+      "debug_bcc": [
+        "elhober@unm.edu"
+      ],
+      "named_templates": {
+        "signup_incomplete": "signup_incomplete: Sent automatically when a signup is created or becomes incomplete",
+        "signup_complete": "signup_complete: Sent automatically when a signup becomes complete",
+        "signup_standalone_incomplete": "signup_standalone_incomplete: Sent automatically when a standalone signup is created or becomes incomplete",
+        "signup_standalone_complete": "signup_standalone_complete: Sent automatically when a standalone signup becomes complete",
+        "signup_page_approved": "signup_page_approved: Sent automatically when a signup is approved in moderation",
+        "signup_page_denied": "signup_page_denied: Sent automatically when a signup is denied in moderation"
+      },
+      "forms": []
+    }
+  },
+  "permissions": {
+    "events": {
+      "*": [
+        "deny all"
+      ],
+      "form/newpreset": [
+        "deny all",
+        "allow group admin"
+      ],
+      "form/newgrouping": [
+        "deny all",
+        "allow group admin"
+      ],
+      "form/newsignupwindowtype": [
+        "deny all",
+        "allow group admin"
+      ],
+      "form/signupothers": [
+        "deny all",
+        "allow group admin"
+      ]
+    },
+    "url": {
+      "_event-management/*": [
+        "deny all",
+        "allow group editor"
+      ],
+      "_event-management/reportbuilder": [
+        "deny all",
+        "allow group admin"
+      ],
+      "event-group/secondary-events": [
+        "allow all"
+      ],
+      "event-group/add": [
+        "allow group editor"
+      ],
+      "event-group/edit": [
+        "allow group editor"
+      ],
+      "event-group/reports": [
+        "allow group editor"
+      ],
+      "event/report": [
+        "allow group editor"
+      ],
+      "event/edit": [
+        "allow group editor"
+      ],
+      "event/delete": [
+        "allow group editor"
+      ],
+      "event/reports": [
+        "allow group editor"
+      ],
+      "event/attendance": [
+        "allow group editor"
+      ],
+      "event-signupwindow/signup": [
+        "allow group user"
+      ],
+      "event-signupwindow/userlists": [
+        "allow group editor"
+      ],
+      "event-signupwindow/invited-emails": [
+        "allow group editor"
+      ],
+      "event-signupwindow/reports": [
+        "allow group editor"
+      ],
+      "event-signupwindow/edit": [
+        "allow group editor"
+      ],
+      "event-signupwindow/delete": [
+        "allow group editor"
+      ],
+      "event-signup/status": [
+        "allow all"
+      ],
+      "event-signup/chunk": [
+        "allow all"
+      ],
+      "event-signup/event-selection": [
+        "allow all"
+      ],
+      "event-signup/personalpage": [
+        "allow all"
+      ],
+      "event-signup/personalpage-preview": [
+        "allow group editor"
+      ],
+      "event-signup/edit": [
+        "allow group editor"
+      ],
+      "event-signup/delete": [
+        "allow group editor"
+      ],
+      "event-userlist/display": [
+        "deny all",
+        "allow group editor"
+      ],
+      "event-userlist/edit": [
+        "deny all",
+        "allow group admin"
+      ],
+      "event-ticket-group/display": [
+        "deny all",
+        "allow group user"
+      ],
+      "event-ticket-group/ticket": [
+        "allow all"
+      ],
+      "event-ticket-group/link-signups": [
+        "allow group editor"
+      ],
+      "event-ticket-group/send-emails": [
+        "allow group editor"
+      ],
+      "event/ticket-groups": [
+        "allow group editor"
+      ]
+    },
+    "add": {
+      "*/event": [
+        "deny all"
+      ],
+      "*/event-signup": [
+        "deny all"
+      ],
+      "*/event-signupwindow": [
+        "deny all"
+      ],
+      "*/event-userlist": [
+        "deny all"
+      ],
+      "page/event-group": [
+        "deny all",
+        "allow group admin"
+      ],
+      "event-signupwindow/*": [
+        "deny all"
+      ],
+      "event-signup/*": [
+        "deny all"
+      ],
+      "event-userlist/*": [
+        "deny all"
+      ],
+      "event-group/event": [
+        "allow group editor"
+      ],
+      "event-group/event-signupwindow": [
+        "allow group editor"
+      ],
+      "event-signupwindow/event-userlist": [
+        "allow group admin"
+      ],
+      "event-ticket-group/*": [
+        "deny all"
+      ],
+      "*/event-ticket-group": [
+        "deny all"
+      ],
+      "event/event-ticket-group": [
+        "allow group admin"
+      ],
+      "*/event-ticket": [
+        "deny all"
+      ],
+      "event-ticket-group/event-ticket": [
+        "allow group editor"
+      ]
+    }
+  },
+  "actions": {
+    "proper": {
+      "event-group": {
+        "reports": "!id/reports"
+      },
+      "event-signupwindow": {
+        "userlists": "!id/userlists",
+        "reports": "!id/reports"
+      },
+      "event": {
+        "reports": "!id/reports",
+        "ticket-groups": "!id/ticket-groups",
+        "attendance": "!id/attendance"
+      },
+      "event-ticket-group": {
+        "send-emails": "!id/send-emails"
+      }
+    },
+    "common": {
+      "_user/signedin": {
+        "eventmanagement": "_event-management/display"
+      }
+    }
+  },
+  "image": {
+    "presets": {
+      "signup-portrait": {
+        "size": "600 600 inset",
+        "extension": "jpg",
+        "save": {
+          "jpeg_quality": 90
+        }
+      },
+      "signup-thumbnail": {
+        "size": "300 300 inset",
+        "extension": "jpg",
+        "save": {
+          "jpeg_quality": 90
+        }
+      },
+      "program-portrait": {
+        "size": "600 600 inset",
+        "format": "jpeg"
+      }
+    }
+  },
+  "navigation": {
+    "parents": {
+      "common": {
+        "_event-management/mail-templates-edit": "_event-management/mail-templates",
+        "_event-management/report": "_event-management/reports"
+      },
+      "proper": {
+        "event-userlist/display": "!parent/userlists",
+        "event-signup/personalpage": "!parent/display"
+      }
+    }
+  },
+  "defaultnounbytype": {
+    "event-group": {
+      "digraph": {
+        "slugpattern": "[parent]/[name]"
+      }
+    },
+    "event": {
+      "digraph": {
+        "slugpattern": "[parent]/[id]"
+      }
+    },
+    "event-signupwindow": {
+      "digraph": {
+        "slugpattern": "[parent]/[id]"
+      }
+    },
+    "event-signup": {
+      "digraph": {
+        "slugpattern": "[parent]/[id]"
+      }
+    }
+  },
+  "helpers": {
+    "classes": {
+      "events": "${module.namespace}\\EventHelper"
+    }
+  },
+  "bootstrap": {
+    "pdos": {
+      "userlists": {
+        "dsn": "sqlite:${paths.storage}/userlists.sqlite"
+      }
+    }
+  }
+}
