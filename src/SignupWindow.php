@@ -49,9 +49,6 @@ class SignupWindow extends Noun
             $this->allEvents = array_filter(
                 $this->eventGroup()->allEvents(true),
                 function (Event $e) {
-                    if ($e['signup_disabled'] || $e['cancelled']) {
-                        return false;
-                    }
                     return !!array_intersect($this->signupGrouping(), $e->signupGrouping());
                 }
             );

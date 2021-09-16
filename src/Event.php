@@ -231,7 +231,7 @@ class Event extends Noun
             ],
             'weight' => 500,
         ];
-        if (in_array('editor', $this->cms()->helper('users')->groups())) {
+        if (in_array('editor', $this->cms()->helper('users')->groups()) || $this->cms()->helper('users')->userIdentifier() == 'root') {
             $map['signup_grouping'] = [
                 'label' => 'Signup grouping',
                 'field' => 'signup_grouping',

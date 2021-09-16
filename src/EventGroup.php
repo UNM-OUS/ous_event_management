@@ -119,7 +119,7 @@ class EventGroup extends Page
         if ($signupsAllowedOnly) {
             return array_filter(
                 $this->allEvents,
-                function ($e) {
+                function (Event $e) {
                     return $e->signupsAllowed();
                 }
             );
