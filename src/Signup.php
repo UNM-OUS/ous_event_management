@@ -364,7 +364,7 @@ class Signup extends Noun
         if ($this->contactInfo() && $this->contactInfo()->name()) {
             return $this->contactInfo()->name();
         }
-        return $this['signup.for'];
+        return 'Unnamed signup: ' . $this['signup.for'];
     }
 
     public function title($verb = null)
