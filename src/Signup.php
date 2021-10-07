@@ -208,6 +208,10 @@ class Signup extends Noun
         if ($this['signup.for'] == $this->cms()->helper('users')->userIdentifier()) {
             return true;
         }
+        // allow if user is subject of signup
+        if ($this['signup.for'] == $this->cms()->helper('users')->id()) {
+            return true;
+        }
         // return false by default
         return false;
     }
@@ -364,7 +368,7 @@ class Signup extends Noun
         if ($this->contactInfo() && $this->contactInfo()->name()) {
             return $this->contactInfo()->name();
         }
-        return 'Unnamed signup: ' . $this['signup.for'];
+        return 'Unnamed signup';
     }
 
     public function title($verb = null)

@@ -1,6 +1,7 @@
 <?php
 
 use Digraph\Modules\ous_digraph_module\Fields\EmailOrNetID;
+use Digraph\Modules\ous_digraph_module\Users\NetIDUser;
 
 $package->cache_noStore();
 $noun = $package->noun();
@@ -31,7 +32,8 @@ $form = $f->form('');
  * fields for who the form is about
  */
 if (!$canSignupOthers) {
-    $signupFor = $u->userIdentifier();
+    $user = $u->user();
+    $signupFor = $user instanceof NetIDUser ? $user->identifier() : $user->email();
 } else {
     $form['for'] = new EmailOrNetID('Who is this signup for?');
     $form['for']->addTip('Make sure this value is correct. It is used to send confirmation emails and determine who is allowed to edit/cancel this signup.');
