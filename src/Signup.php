@@ -170,7 +170,7 @@ class Signup extends Noun
         if (!$this->signupWindow()) {
             return null;
         }
-        return $this->signupWindow()->firstUserListUser($this['signup.for']);
+        return $this->signupWindow()->firstUserListUser($this['signup.netid'] ?? $this['signup.for']);
     }
 
     public function allUserListUsers()
@@ -178,7 +178,7 @@ class Signup extends Noun
         if (!$this->signupWindow()) {
             return null;
         }
-        return $this->signupWindow()->allUserListUsers($this['signup.for']);
+        return $this->signupWindow()->allUserListUsers($this['signup.netid'] ?? $this['signup.for']);
     }
 
     public function allowUpdate(): bool

@@ -34,12 +34,14 @@ $form = $f->form('');
 if (!$canSignupOthers) {
     $user = $u->user();
     $signupFor = $user instanceof NetIDUser ? $user->identifier() : $user->email();
+    $signupNetID = $user instanceof NetIDUser ? $user->identifier() : $user['netid'];
 } else {
     $form['for'] = new EmailOrNetID('Who is this signup for?');
     $form['for']->addTip('Make sure this value is correct. It is used to send confirmation emails and determine who is allowed to edit/cancel this signup.');
     $form['for']->addTip('NetIDs are preferred, because they allow the user to modify their own signup. Signups made using email addresses will only be editable by you.');
     $form['for']->required(true);
     $signupFor = $form['for']->value();
+    $signupNetID = null;
 }
 
 /**
@@ -58,6 +60,7 @@ if (!$form['for'] || $form->handle()) {
     }
     // create a new signup
     $signup = $noun->createSignup($signupFor);
+    $signup['signup.netid'] = $signupNetID;
     $events = $noun->eventGroup()->allEvents();
     // automatically add events if there are less than two events
     // in this case we bypass the event selection page

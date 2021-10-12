@@ -44,10 +44,12 @@ class Waiver extends AbstractChunk
         }
         echo "<div class='incidental'>";
         echo "first signed " . $this->signup[$this->name . '.chunk.created.time'];
-        echo " by " . preg_replace('/@netid$/', '', $this->signup[$this->name . '.chunk.created.user']);
+        $user = $this->signup->cms()->helper('users')->user($this->signup[$this->name . '.chunk.created.user']);
+        echo " by " . ($user ? $user->name() : 'anonymous');
         if ($this->signup[$this->name . '.chunk.created.user'] != $this->signup[$this->name . '.chunk.modified.user']) {
             echo "<br><br>last signed " . $this->signup[$this->name . '.chunk.modified.time'];
-            echo " by " . preg_replace('/@netid$/', '', $this->signup[$this->name . '.chunk.modified.user']);
+            $user = $this->signup->cms()->helper('users')->user($this->signup[$this->name . '.chunk.created.user']);
+            echo " by " . ($user ? $user->name() : 'anonymous');
         }
         echo "</div>";
     }
@@ -67,8 +69,9 @@ class Waiver extends AbstractChunk
 
     protected function form_map(): array
     {
-        $netid = $this->signup->cms()->helper('users')->userIdentifier();
-        if ($this->signup['signup.for'] != $netid) {
+        $user = $this->signup->cms()->helper('users')->user();
+        $netid = $user['netid'] ?? $user->identifier();
+        if ($this->signup['signup.for'] != $netid && $this->signup['signup.netid'] != $netid) {
             return [
                 'checkbox' => [
                     'label' => 'Filled out by ' . $netid,
