@@ -1,4 +1,5 @@
 <?php
+
 namespace Digraph\Modules\ous_event_management\Chunks;
 
 use Digraph\Forms\Fields\FieldValueAutocomplete;
@@ -77,7 +78,7 @@ class UNMAffiliation extends AbstractChunk
     {
         $name = $this->name;
         $types = ['event-signup'];
-        return [
+        $map = [
             'affiliation' => [
                 'label' => 'UNM affiliation',
                 'class' => 'select',
@@ -85,6 +86,7 @@ class UNMAffiliation extends AbstractChunk
                 'options' => [
                     'Faculty' => 'Faculty',
                     'Staff' => 'Staff',
+                    'Administration' => 'Administration',
                     'Student' => 'Student',
                     'Alumni' => 'Alumni',
                     'Other' => 'Other',
@@ -116,22 +118,27 @@ class UNMAffiliation extends AbstractChunk
                 ],
                 'required' => false,
                 'weight' => 100,
-            ],
-            // 'msc' => [
-            //     'label' => 'Mail stop code (if applicable)',
-            //     'class' => FieldValueAutocomplete::class,
-            //     'field' => "$name.msc",
-            //     'extraConstructArgs' => [
-            //         $types, //types
-            //         ["$name.msc"], //fields
-            //         true, //allow adding
-            //     ],
-            //     'tips' => [
-            //         'If you don\'t know your Mail Stop Code, you can <a href="https://directory.unm.edu/" target="_blank">look it up in the directory</a>'
-            //     ],
-            //     'required' => false,
-            //     'weight' => 100,
-            // ],
+            ]
         ];
+        // insert existing value into dropdown, so users can edit other fields
+        if ($this->signup["$name.affiliation"]) {
+            $map['affiliation']['options'][$this->signup["$name.affiliation"]] = $this->signup["$name.affiliation"];
+        }
+        // allow editors to override and enter in any affiliation value
+        if (in_array('editor', $this->signup->cms()->helper('users')->groups())) {
+            $map['affiliation'] = [
+                'label' => 'UNM position/affiliation',
+                'class' => FieldValueAutocomplete::class,
+                'field' => "$name.affiliation",
+                'extraConstructArgs' => [
+                    $types, //types
+                    ["$name.affiliation"], //fields
+                    true, //allow adding
+                ],
+                'required' => false,
+                'weight' => 100,
+            ];
+        }
+        return $map;
     }
 }
