@@ -70,7 +70,7 @@ class Waiver extends AbstractChunk
     protected function form_map(): array
     {
         $user = $this->signup->cms()->helper('users')->user();
-        $netid = $user['netid'] ?? $user->identifier();
+        $netid = $user['netid'] ?? ($user ? $user->identifier() : null);
         if ($this->signup['signup.for'] != $netid && $this->signup['signup.netid'] != $netid) {
             return [
                 'checkbox' => [
