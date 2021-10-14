@@ -218,6 +218,10 @@ class Signup extends Noun
 
     public function allowViewing(): bool
     {
+        // allow if signup has a netid as its "signup.for"
+        if (strpos($this['signup.for'], '@')) {
+            return true;
+        }
         // allow if signup belongs to user
         if ($this->isMine()) {
             return true;
