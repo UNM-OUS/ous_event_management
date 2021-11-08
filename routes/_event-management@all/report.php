@@ -54,7 +54,9 @@ $where = '${dso.id} in (' . implode(',', array_map(
 $where .= ' AND (' . $r['f'] . ')';
 
 // add signup_type to query
-$types = array_filter(array_map(function ($e) {return preg_replace('/[^a-z ]/', '', $e);}, explode(',', $package['url.args.types'])));
+$types = array_filter(array_map(function ($e) {
+    return preg_replace('/[^a-z ]/', '', $e);
+}, explode(',', $package['url.args.types'])));
 if ($types) {
     $where = '(' . $where . ') AND ${signup_windowtype} in (' . implode(',', array_map(
         function ($e) {
@@ -144,11 +146,11 @@ $results = array_map(
             $row[] = $value;
         }
         $row = array_map(
-            function($c) {
+            function ($c) {
                 if (is_array($c)) {
                     $c[0] = strval($c[0]);
                     $c[1] = strval($c[1]);
-                }else {
+                } else {
                     $c = strval($c);
                 }
                 return $c;
@@ -165,7 +167,7 @@ $results = array_map(
 /** @var \Digraph\Media\MediaHelper */
 $media = $cms->helper('media');
 $asset = $media->create(
-    $r['t'] . ' '.crc32(serialize($r)).'_' . date('YmdHi') . '.xlsx',
+    $r['t'] . ' ' . crc32(serialize($r)) . '_' . date('YmdHi') . '.xlsx',
     function ($dest) use ($cms, $columns, &$results) {
         $writer = WriterEntityFactory::createXLSXWriter();
         $cms->helper('filesystem')->put('', $dest, true);
@@ -228,9 +230,9 @@ foreach ($results as $row) {
 }
 echo "</table>";
 
-function format_cell_date($value, Signup $signup, CMS $cms): string
+function format_cell_date($value, Signup $signup, CMS $cms): array
 {
-    return $cms->helper('strings')->dateHTML($value);
+    return [$cms->helper('strings')->dateHTML($value), $cms->helper('strings')->datetime($value)];
 }
 
 function format_cell_link($value, Signup $signup, CMS $cms): array
