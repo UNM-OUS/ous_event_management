@@ -24,7 +24,7 @@ if ($signup->complete()) {
             /** @var \Digraph\Modules\event_attendance\TicketGroup */
             // $ticketGroup = $ticketGroup;
             if (in_array($signup['dso.id'], $ticketGroup->signupIDs())) {
-                $tickets[] = $ticketGroup->link($ticketGroup->name(), 'ticket', ['s' => $signup['dso.id']]);
+                $tickets[$ticketGroup['dso.id']] = $ticketGroup->link($ticketGroup->name(), 'ticket', ['s' => $signup['dso.id']]);
             }
         }
     }
