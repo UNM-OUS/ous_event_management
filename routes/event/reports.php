@@ -14,8 +14,8 @@ $form['preset'] = new Select('Report type');
 $form['preset']->required(true);
 $form['windows'] = new CheckboxList('Signup windows to include');
 $form['windows']->addTip('Leave blank to include all');
-$form['types'] = new CheckboxList('Limit to specific types/audiences');
-$form['types']->addTip('Leave blank to include all');
+// $form['types'] = new CheckboxList('Limit to specific types/audiences');
+// $form['types']->addTip('Leave blank to include all');
 
 /**
  * set up options from signup windows
@@ -29,7 +29,7 @@ foreach ($event->signupWindows() as $window) {
     }
 }
 $form['windows']->options($windowsOptions);
-$form['types']->options($typesOptions);
+// $form['types']->options($typesOptions);
 
 /**
  * Set up options from presets
@@ -52,7 +52,7 @@ if ($form->handle()) {
     $url = $cms->helper('urls')->parse('_event-management/report');
     $url['args.preset'] = $form['preset']->value();
     $url['args.windows'] = implode(',', $form['windows']->value());
-    $url['args.types'] = implode(',', $form['types']->value());
+    // $url['args.types'] = implode(',', $form['types']->value());
     $url['args.events'] = $event['dso.id'];
     $url['args.parent'] = $event['dso.id'];
     $package->redirect($url);
