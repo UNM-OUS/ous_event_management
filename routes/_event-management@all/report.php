@@ -232,7 +232,7 @@ echo "</table>";
 
 function format_cell_date($value, Signup $signup, CMS $cms): array
 {
-    return [$cms->helper('strings')->dateHTML($value), $cms->helper('strings')->datetime($value)];
+    return [$cms->helper('strings')->dateHTML($value), date("Y-m-d H:i:s", $value)];
 }
 
 function format_cell_link($value, Signup $signup, CMS $cms): array
