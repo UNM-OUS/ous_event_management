@@ -27,9 +27,12 @@ if ($events || $windowEvents) {
     }
     echo "Events</div>";
     // verify events
+    $windowEvents = array_map(function ($e) {
+        return $e['dso.id'];
+    }, $windowEvents);
     foreach ($events as $e) {
         $error = false;
-        if (!in_array($e, $windowEvents)) {
+        if (!in_array($e['dso.id'], $windowEvents)) {
             $cms->helper('notifications')->printError(
                 'This signup indicates attendance for ' . $e->link() . ' which is no longer associated with this signup form.'
             );
@@ -70,7 +73,7 @@ foreach ($signup->chunks() as $chunk) {
                 $status.addClass('loading');
                 digraph.getJSON(
                     "<?php echo $signup['dso.id']; ?>/status",
-                    function (status) {
+                    function(status) {
                         // update status bar
                         $status
                             .removeClass('loading')
@@ -79,7 +82,7 @@ foreach ($signup->chunks() as $chunk) {
                             .removeClass('notification-error')
                             .removeClass('notification-info')
                             .removeClass('notification-confirmation')
-                            .addClass('notification-'+status.type)
+                            .addClass('notification-' + status.type)
                             .html(status.message);
                         // update titles in header and breadcrumb
                         $('article.type_event-signup>h1:first-child').html(status.name);
@@ -94,13 +97,13 @@ foreach ($signup->chunks() as $chunk) {
         $('.signup-chunk a.mode-switch').click((e) => {
             var $target = $(e.target);
             var $wrapper = $target.closest('.signup-chunk');
-            var url = $target.attr('href')+'&iframe=1';
+            var url = $target.attr('href') + '&iframe=1';
             var $chunk = $(
                 '<iframe class="embedded-iframe resized" src=' +
                 url +
                 ' style="height:' + $wrapper.height() + 'px"></iframe>'
             );
-            $chunk.on('load',updateStatus);
+            $chunk.on('load', updateStatus);
             $wrapper.replaceWith($chunk);
             e.preventDefault();
             return false;
@@ -109,13 +112,13 @@ foreach ($signup->chunks() as $chunk) {
         var $wrapper = $('#signup-status-wrapper');
         // $('#digraph-meta > .digraph-area-wrapper').append($wrapper);
         var doSticky = function() {
-            var sticky = ($(window).scrollTop()-$wrapper.offset().top) >= 0;
+            var sticky = ($(window).scrollTop() - $wrapper.offset().top) >= 0;
             if (sticky) {
                 if (!$status.is('.sticky')) {
                     $wrapper.height($wrapper.height());
                 }
                 $status.addClass('sticky');
-            }else {
+            } else {
                 $status.removeClass('sticky');
                 $wrapper.height('auto');
             }
@@ -133,18 +136,21 @@ foreach ($signup->chunks() as $chunk) {
         max-width: 100% !important;
         margin: 0;
     }
+
     #signup-status.sticky {
-        position:fixed;
-        margin:0;
-        left:0;
-        right:0;
-        top:0;
+        position: fixed;
+        margin: 0;
+        left: 0;
+        right: 0;
+        top: 0;
         border-radius: 0;
         z-index: 100;
     }
+
     #signup-status.notification {
         transition: opacity 0.5s ease-in-out;
     }
+
     #signup-status.notification:after {
         content: "\f021";
         font-family: 'Font Awesome 5 Free';
@@ -159,9 +165,11 @@ foreach ($signup->chunks() as $chunk) {
         opacity: 0;
         transition: opacity 0.5s ease-in-out;
     }
+
     #signup-status.notification.loading {
         opacity: 0.85;
     }
+
     #signup-status.notification.loading:after {
         opacity: 1;
     }
