@@ -15,15 +15,6 @@ $events = $noun->primaryEvents();
 if (count($events) == 0) {
     // there are no primary events
     // $cms->helper('notifications')->printWarning('No primary events defined');
-} elseif (count($events) == 1) {
-    // there is one primary event, just embed its info on the page
-    $event = reset($events);
-    if ($event->title() != $noun->title()) {
-        echo "<h2><a href='" . $event->url() . "'>" . $event->title() . "</a></h2>";
-    }
-    echo '<div class="digraph-card incidental">' . $event->metaCell() . '</div>';
-    echo $event->body();
-    echo "<hr>";
 } else {
     //there are multiple primary events, list them
     foreach ($events as $event) {
